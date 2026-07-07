@@ -1,0 +1,405 @@
+---
+title: "Konstruksi & Agregasi Data SUSENAS–PODES dengan R"
+subtitle: "Studi kasus: Balita Sakit (SUSENAS) & Posyandu (PODES) — data sintetis 119 kab/kota Jawa"
+author: "Training R UNNES"
+date: today
+format:
+  revealjs:
+    theme: simple
+    slide-number: true
+    code-line-numbers: true
+    df-print: kable
+    fontsize: 26px
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+## Disklaimer {.smaller}
+
+::: {.callout-important}
+## Data sintetis — bukan data asli BPS
+Seluruh data yang digunakan dalam materi ini adalah **data sintetis**
+(dibangkitkan komputer) yang dibuat **khusus untuk keperluan pelatihan**.
+Struktur file, nama variabel, dan alur pengolahan meniru SUSENAS KOR
+Maret 2023 dan PODES 2021, **tetapi seluruh angka, indikator, dan hasil
+regresi TIDAK menggambarkan kondisi riil** kabupaten/kota mana pun.
+
+Jangan mengutip angka dari materi ini sebagai data resmi. Untuk data
+sesungguhnya, gunakan data mikro resmi dari BPS (silahkan ajukan melalui
+[silastik.bps.go.id](https://silastik.bps.go.id)).
+:::
+
+## Alur kerja {.smaller}
+
+```
+data MENTAH (mikro)          per VARIABEL              level KABUPATEN
+────────────────────  ──►  ─────────────────  ──►   ─────────────────────
+SUSENAS: individu           balita_sakit             % balita sakit (FWT)
+PODES  : desa               posyandu per desa        jumlah posyandu
+                                                        │
+                                                        ▼
+                                             basis data regresi (119 baris)
+```
+
+::: {.callout-warning appearance="simple"}
+Data yang dipakai di sini **sintetis** (untuk latihan) — struktur meniru
+SUSENAS KOR 2023 & PODES 2021, tetapi angkanya bukan data resmi BPS.
+:::
+
+## Mengenal antarmuka RStudio {.smaller}
+
+![](images/rstudio_ui.svg){width="100%" fig-align="center"}
+
+## Paket yang dibutuhkan
+
+```{r}
+library(haven)   # baca/tulis file Stata (.dta)
+library(dplyr)   # manipulasi data
+```
+
+- `haven` → `read_dta()`, `write_dta()`, `labelled()`
+- `dplyr` → `filter()`, `mutate()`, `group_by()`, `summarise()`
+
+# Bagian 1 — SUSENAS: Balita Sakit
+
+## Langkah 1.1 — Baca data mentah individu
+
+```{r}
+kor1 <- read_dta("Raw_Sintetis_DTA/kor23_ind_1_sintetis.dta")
+dim(kor1)
+```
+
+```{r}
+head(kor1[, c("URUT", "R101", "R102", "R401", "R407", "R1102", "FWT")])
+```
+
+- 1 baris = 1 **anggota rumah tangga**
+- `R407` = umur, `R1102` = keluhan kesehatan, `FWT` = bobot individu
+
+## Langkah 1.2 — Bentuk kode kabupaten & kode individu
+
+```{r}
+kor1 <- kor1 %>%
+  mutate(
+    kode_kab = as.integer(paste0(R101, R102)),  # 33 + "74" -> 3374
+    kode_ind = paste0(URUT, R401)               # id unik individu
+  )
+kor1 %>% select(URUT, R101, R102, kode_kab, kode_ind) %>% head(4)
+```
+
+`R101` (provinsi) dan `R102` (kab/kota) digabung → kode BPS 4 digit.
+
+## Langkah 1.3 — Filter balita & buat variabel
+
+```{r}
+balita_sakit <- kor1 %>%
+  filter(R407 < 5) %>%                             # balita = umur < 5 th
+  mutate(balita_sakit = as.integer(R1102 == 5)) %>% # kode 5 = ada keluhan
+  select(URUT, FWT, kode_ind, kode_kab, balita_sakit)
+
+nrow(balita_sakit)
+table(balita_sakit$balita_sakit)
+```
+
+## Langkah 1.4 — Pasang label ala Stata & simpan
+
+```{r}
+balita_sakit <- balita_sakit %>%
+  mutate(balita_sakit = labelled(balita_sakit,
+    labels = c(Tidak = 0L, Ya = 1L),
+    label  = "Balita memiliki masalah kesehatan; 1=Ya, 0=Tidak"))
+
+write_dta(balita_sakit, "Data_Sintetis_DTA/susenas_balita_sakit.dta")
+```
+
+File per-variabel siap → tahap konstruksi **selesai**.
+
+## Langkah 1.5 — Agregasi ke kabupaten (bobot FWT)
+
+```{r}
+kab_balita <- balita_sakit %>%
+  group_by(kode_kab) %>%
+  summarise(
+    n_balita         = n(),
+    pct_balita_sakit = weighted.mean(as.numeric(balita_sakit),
+                                     w = FWT) * 100,
+    .groups = "drop")
+head(kab_balita, 5)
+```
+
+**Kunci:** rata-rata **tertimbang FWT**, bukan rata-rata biasa —
+supaya hasil mewakili populasi, bukan sekadar sampel.
+
+## Mengapa harus pakai bobot?
+
+```{r}
+balita_sakit %>%
+  group_by(kode_kab) %>%
+  summarise(
+    tanpa_bobot  = mean(as.numeric(balita_sakit)) * 100,
+    dengan_bobot = weighted.mean(as.numeric(balita_sakit), w = FWT) * 100
+  ) %>% head(5)
+```
+
+Selisihnya nyata — desain sampling SUSENAS tidak self-weighting.
+
+# Bagian 2 — PODES: Jumlah Posyandu
+
+## Langkah 2.1 — Baca data mentah desa
+
+```{r}
+podes <- read_dta("Raw_Sintetis_DTA/podes_desa_sintetis.dta")
+dim(podes)
+head(podes[, c("R101", "R102", "R103", "R104", "R705A")])
+```
+
+- 1 baris = 1 **desa/kelurahan**
+- `R705A` = jumlah posyandu di desa
+
+## Langkah 2.2 — Kode kabupaten, lalu akumulasi
+
+```{r}
+kab_posyandu <- podes %>%
+  mutate(kode_kab = as.integer(paste0(R101, R102))) %>%
+  group_by(kode_kab) %>%
+  summarise(
+    n_desa          = n(),
+    jumlah_posyandu = sum(R705A, na.rm = TRUE),
+    .groups = "drop")
+head(kab_posyandu, 5)
+```
+
+PODES = **sensus desa** → cukup `sum()`, **tanpa bobot**.
+
+## Langkah 2.3 — (Opsional) jadikan rasio
+
+```{r}
+ref <- read_dta("Data_Sintetis_DTA/ref_kabupaten_jawa.dta")
+
+kab_posyandu <- kab_posyandu %>%
+  left_join(ref %>% select(kode_kab, nama_kab, populasi), by = "kode_kab") %>%
+  mutate(posyandu_per_100k = jumlah_posyandu / as.numeric(populasi) * 1e5)
+
+kab_posyandu %>% select(kode_kab, nama_kab, jumlah_posyandu,
+                        posyandu_per_100k) %>% head(5)
+```
+
+# Bagian 3 — Gabungkan → basis data regresi
+
+## Merge SUSENAS × PODES per kabupaten
+
+```{r}
+data_kab <- kab_balita %>%
+  left_join(kab_posyandu, by = "kode_kab") %>%
+  select(kode_kab, nama_kab, pct_balita_sakit,
+         jumlah_posyandu, posyandu_per_100k)
+
+nrow(data_kab)
+head(data_kab, 5)
+```
+
+119 baris = 119 kabupaten/kota se-Jawa → siap untuk `lm()`.
+
+## Cek hubungan kedua variabel
+
+```{r}
+#| fig-height: 4.5
+plot(data_kab$posyandu_per_100k, data_kab$pct_balita_sakit,
+     xlab = "Posyandu per 100.000 penduduk",
+     ylab = "% balita sakit (tertimbang)",
+     pch = 19, col = "steelblue")
+abline(lm(pct_balita_sakit ~ posyandu_per_100k, data = data_kab),
+       col = "firebrick", lwd = 2)
+```
+
+# Bagian 4 — Analisa OLS dengan Variabel Lengkap
+
+## Langkah 4.1 — Baca basis data kabupaten {.smaller}
+
+Peserta diasumsikan sudah mengkonstruksi variabel lain (skrip `03`–`09`)
+dan menggabungkannya (skrip `10`):
+
+```{r}
+data_jawa <- read_dta("Hasil_Agregasi_DTA/data_kabupaten_jawa.dta") %>%
+  mutate(kota = as.integer(tipe == 2))   # dummy kota
+
+dim(data_jawa)
+names(data_jawa)
+```
+
+**Model yang disarankan** (determinan kesehatan balita):
+
+$$\text{pct\_balita\_sakit} = \beta_0 + \beta_1\,\text{imunisasi} + \beta_2\,\text{merokok} + \beta_3\,\text{pendidikan ibu} + \beta_4\,\text{faskes} + \beta_5\,\text{kota} + \varepsilon$$
+
+Ekspektasi tanda: imunisasi (−), merokok (+), pendidikan ibu (−), faskes (−)
+
+## Langkah 4.2 — Eksplorasi sebelum regresi
+
+```{r}
+round(cor(data_jawa %>%
+  select(pct_balita_sakit, pct_imunisasi, pct_keluarga_merokok,
+         mean_pendidikan_ibu, faskes_per_100k)), 2)
+```
+
+**Baca:** semua korelasi outcome-prediktor searah dugaan (imunisasi −0,45;
+pendidikan ibu −0,52; merokok +0,24). Antar prediktor: imunisasi ×
+pendidikan ibu = 0,61 → waspada **multikolinearitas**, cek VIF nanti.
+
+## Langkah 4.2b — Visual: sebaran outcome
+
+```{r}
+#| fig-height: 4.5
+hist(data_jawa$pct_balita_sakit,
+     breaks = 20, col = "steelblue", border = "white",
+     main   = "Sebaran % Balita Sakit antar Kabupaten/Kota",
+     xlab   = "% balita sakit (tertimbang FWT)", ylab = "Frekuensi")
+abline(v = mean(data_jawa$pct_balita_sakit), col = "firebrick",
+       lwd = 2, lty = 2)
+```
+
+## Langkah 4.2b — Visual: perbandingan antar wilayah
+
+::: columns
+::: {.column width="55%"}
+```{r}
+#| fig-height: 5.5
+par(mar = c(9, 4, 3, 1))
+boxplot(pct_balita_sakit ~ provinsi, data = data_jawa,
+        col = "lightsteelblue", las = 2, xlab = "",
+        main = "Menurut Provinsi", ylab = "% balita sakit")
+```
+:::
+::: {.column width="45%"}
+```{r}
+#| fig-height: 5.5
+boxplot(pct_balita_sakit ~ kota, data = data_jawa,
+        names = c("Kabupaten", "Kota"),
+        col = c("lightsteelblue", "lightsalmon"),
+        main = "Kabupaten vs Kota", ylab = "% balita sakit")
+```
+:::
+:::
+
+## Langkah 4.2b — Visual: outcome vs prediktor {.smaller}
+
+```{r}
+#| fig-height: 5.5
+pairs(data_jawa[, c("pct_balita_sakit", "pct_imunisasi",
+                    "pct_keluarga_merokok", "mean_pendidikan_ibu",
+                    "faskes_per_100k")],
+      labels = c("% balita\nsakit", "% imunisasi", "% keluarga\nmerokok",
+                 "pendidikan\nibu", "faskes\nper 100k"),
+      pch = 19, col = adjustcolor("steelblue", 0.6))
+```
+
+Baris pertama = outcome vs prediktor; sisanya = korelasi **antar prediktor**.
+
+## Langkah 4.3 — Model 1: regresi sederhana
+
+```{r}
+ols1 <- lm(pct_balita_sakit ~ pct_imunisasi, data = data_jawa)
+summary(ols1)$coefficients
+```
+
+```{r}
+summary(ols1)$r.squared
+```
+
+**Baca:** +1 poin cakupan imunisasi ↔ −0,37 poin % balita sakit
+(p < 0,001); imunisasi sendirian menjelaskan ±21% variasi antar kabupaten.
+
+## Langkah 4.4 — Model 2: regresi berganda {.smaller}
+
+```{r}
+ols2 <- lm(pct_balita_sakit ~ pct_imunisasi + pct_keluarga_merokok +
+             mean_pendidikan_ibu + faskes_per_100k + kota,
+           data = data_jawa)
+summary(ols2)
+```
+
+**Baca:** prediktor terkuat = **pendidikan ibu** (−6,4 poin per jenjang,
+p < 0,001); imunisasi & merokok di ambang signifikansi (p ≈ 0,06);
+faskes & kota tidak signifikan. R² = 0,33.
+
+## Momen didaktik: omitted variable bias {.smaller}
+
+| Koefisien `pct_imunisasi` | Nilai |
+|---|---|
+| Model 1 (sederhana) | `r round(coef(ols1)["pct_imunisasi"], 3)` |
+| Model 2 (berganda) | `r round(coef(ols2)["pct_imunisasi"], 3)` |
+
+- Koefisien menyusut karena imunisasi berkorelasi dgn pendidikan ibu
+  (r ≈ 0,6) — model sederhana "menitipkan" efek pendidikan ke imunisasi.
+- **Pendidikan ibu** muncul sebagai prediktor terkuat — konsisten dgn
+  literatur kesehatan anak.
+
+## Langkah 4.5 — Diagnostik OLS
+
+```{r}
+#| fig-height: 5.5
+par(mfrow = c(2, 2)); plot(ols2); par(mfrow = c(1, 1))
+```
+
+**Baca:** tidak ada pola di residual, Q-Q mengikuti diagonal, tidak ada
+observasi berpengaruh ekstrem → asumsi OLS terpenuhi secara visual.
+
+## Diagnostik lanjutan (VIF & Breusch-Pagan) {.smaller}
+
+```{r}
+library(car)
+vif(ols2)
+```
+
+**Baca:** semua VIF < 2 (tertinggi ±1,8) — jauh dari ambang masalah
+(> 10). Korelasi imunisasi × pendidikan ibu 0,61 **belum** mengganggu.
+
+```{r}
+library(lmtest)
+bptest(ols2)
+```
+
+**Baca:** p = 0,20 > 0,05 → residual homoskedastis; standard error OLS
+biasa sah dipakai. (Bila signifikan → robust SE: `sandwich::vcovHC`.)
+
+## Rangkuman
+
+| Tahap | SUSENAS (survei) | PODES (sensus desa) |
+|---|---|---|
+| Unit mentah | individu/ruta | desa |
+| Kode wilayah | `paste0(R101, R102)` | `paste0(R101, R102)` |
+| Konstruksi | filter + recode | pilih kolom faskes |
+| Agregasi | `weighted.mean(x, FWT)` | `sum(x)` |
+| Hasil | % / rata-rata per kab | jumlah / rasio per kab |
+| Analisis | OLS: eksplorasi → model → diagnostik | |
+
+- Skrip lengkap: folder `Script_R/` (00–11); step-by-step = skrip `11`
+- Latihan: ganti outcome jadi `pct_imunisasi`; coba
+  `log(mean_pengeluaran_susu)` sebagai prediktor
+
+## Daftar Pustaka {.smaller}
+
+- Badan Pusat Statistik. (2023). *Pedoman Pencacahan Survei Sosial Ekonomi
+  Nasional (SUSENAS) Maret 2023*. Jakarta: BPS.
+- Badan Pusat Statistik. (2021). *Pedoman Pendataan Potensi Desa (PODES)
+  2021*. Jakarta: BPS.
+- Fox, J., & Weisberg, S. (2019). *An R Companion to Applied Regression*
+  (3rd ed.). Thousand Oaks, CA: Sage. (paket `car`)
+- Lumley, T. (2010). *Complex Surveys: A Guide to Analysis Using R*.
+  Hoboken, NJ: John Wiley & Sons. (paket `survey`)
+- R Core Team. (2024). *R: A Language and Environment for Statistical
+  Computing*. Vienna: R Foundation for Statistical Computing.
+- Wickham, H., François, R., Henry, L., Müller, K., & Vaughan, D. (2023).
+  *dplyr: A Grammar of Data Manipulation*. R package.
+- Wickham, H., & Miller, E. (2023). *haven: Import and Export 'SPSS',
+  'Stata' and 'SAS' Files*. R package.
+- Wooldridge, J. M. (2020). *Introductory Econometrics: A Modern Approach*
+  (7th ed.). Boston, MA: Cengage Learning.
+- Zeileis, A., & Hothorn, T. (2002). Diagnostic checking in regression
+  relationships. *R News*, 2(3), 7–10. (paket `lmtest`)
+
+::: {.callout-important appearance="simple"}
+Materi ini menggunakan **data sintetis untuk pelatihan** — bukan data resmi
+BPS dan tidak menggambarkan kondisi riil wilayah mana pun.
+:::
