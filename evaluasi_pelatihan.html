@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Form Evaluasi Pelatihan — Training R UNNES (SUSENAS–PODES)</title>
+<style>
+  :root{
+    color-scheme: light dark;
+    --bg:#f4f6f9; --card:#ffffff; --ink:#1a1d23; --muted:#6b7280;
+    --line:rgba(120,120,120,.22); --brand:#2563eb; --brand-soft:rgba(37,99,235,.10);
+    --good:#16a34a; --warn:#f59e0b; --bad:#dc2626;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#15171c; --card:#1e2127; --ink:#e8eaed; --muted:#9aa3af; --line:rgba(160,160,160,.22); --brand-soft:rgba(37,99,235,.18); }
+  }
+  *{ box-sizing:border-box; }
+  body{ margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; line-height:1.55;
+        color:var(--ink); background:var(--bg); }
+  .wrap{ max-width:840px; margin:0 auto; padding:2rem 1.1rem 5rem; }
+  header{ background:linear-gradient(135deg,var(--brand),#1e40af); color:#fff; border-radius:16px;
+          padding:1.6rem 1.5rem; margin-bottom:1.5rem; }
+  header h1{ margin:0 0 .35rem; font-size:1.35rem; line-height:1.25; }
+  header p{ margin:0; opacity:.92; font-size:.92rem; }
+  .meta-badges{ margin-top:.9rem; display:flex; flex-wrap:wrap; gap:.4rem; }
+  .badge{ background:rgba(255,255,255,.16); border-radius:999px; padding:.2rem .7rem; font-size:.75rem; }
+  section{ background:var(--card); border:1px solid var(--line); border-radius:14px;
+           padding:1.2rem 1.3rem; margin-bottom:1.15rem; }
+  section > h2{ font-size:1.02rem; margin:0 0 .2rem; display:flex; align-items:center; gap:.5rem; }
+  section > h2 .n{ background:var(--brand-soft); color:var(--brand); font-size:.78rem; font-weight:700;
+                   width:1.7rem; height:1.7rem; border-radius:8px; display:inline-flex; align-items:center; justify-content:center; }
+  section > .hint{ color:var(--muted); font-size:.84rem; margin:0 0 1rem; }
+  .grid2{ display:grid; gap:.9rem; grid-template-columns:1fr; }
+  @media(min-width:560px){ .grid2{ grid-template-columns:1fr 1fr; } }
+  label.field{ display:block; font-size:.85rem; }
+  label.field span{ display:block; color:var(--muted); margin-bottom:.25rem; font-weight:600; }
+  input[type=text], input[type=date], textarea, select{
+    width:100%; padding:.55rem .65rem; border:1px solid var(--line); border-radius:9px;
+    background:transparent; color:inherit; font:inherit; }
+  textarea{ min-height:74px; resize:vertical; }
+
+  .q{ padding:.75rem 0; border-top:1px dashed var(--line); }
+  .q:first-of-type{ border-top:0; }
+  .q .qt{ font-size:.92rem; margin-bottom:.5rem; }
+  .q .qt b{ color:var(--brand); }
+  .likert{ display:grid; grid-template-columns:repeat(5,1fr); gap:.4rem; }
+  .likert input{ position:absolute; opacity:0; width:0; height:0; }
+  .likert label{ text-align:center; border:1px solid var(--line); border-radius:9px; padding:.45rem .2rem;
+                 cursor:pointer; font-size:.72rem; color:var(--muted); user-select:none; transition:.12s; }
+  .likert label .num{ display:block; font-size:1.05rem; font-weight:700; color:var(--ink); margin-bottom:.1rem; }
+  .likert label:hover{ border-color:var(--brand); }
+  .likert input:checked + label{ background:var(--brand); border-color:var(--brand); color:#fff; }
+  .likert input:checked + label .num{ color:#fff; }
+  .likert-scale{ display:flex; justify-content:space-between; font-size:.7rem; color:var(--muted); margin-top:.3rem; }
+
+  .nps{ display:grid; grid-template-columns:repeat(11,1fr); gap:.3rem; }
+  .nps input{ position:absolute; opacity:0; width:0; height:0; }
+  .nps label{ text-align:center; border:1px solid var(--line); border-radius:7px; padding:.4rem 0; cursor:pointer;
+              font-size:.82rem; font-weight:600; color:var(--muted); }
+  .nps input:checked + label{ background:var(--brand); border-color:var(--brand); color:#fff; }
+
+  .scorebar{ position:sticky; top:0; z-index:5; background:var(--card); border:1px solid var(--line);
+             border-radius:12px; padding:.8rem 1rem; margin-bottom:1.15rem; display:flex; align-items:center;
+             gap:1rem; flex-wrap:wrap; }
+  .scorebar .big{ font-size:1.6rem; font-weight:800; }
+  .scorebar .lbl{ font-size:.8rem; color:var(--muted); }
+  .track{ flex:1; min-width:140px; height:9px; border-radius:999px; background:var(--line); overflow:hidden; }
+  .track > i{ display:block; height:100%; width:0; background:var(--warn); transition:width .25s, background .25s; }
+  .pill{ font-size:.75rem; font-weight:700; padding:.2rem .6rem; border-radius:999px; }
+
+  .actions{ display:flex; flex-wrap:wrap; gap:.6rem; margin-top:1.4rem; }
+  button{ font:inherit; font-weight:600; border:1px solid var(--line); border-radius:10px; padding:.6rem 1rem;
+          background:transparent; color:inherit; cursor:pointer; transition:.12s; }
+  button.primary{ background:var(--brand); border-color:var(--brand); color:#fff; }
+  button:hover{ transform:translateY(-1px); }
+  .status{ font-size:.88rem; font-weight:600; margin:.8rem 0 0; min-height:1.2em; }
+  .note{ font-size:.8rem; color:var(--muted); margin-top:.8rem; }
+  .req{ color:var(--bad); }
+  footer{ text-align:center; color:var(--muted); font-size:.8rem; margin-top:2rem; }
+  @media print{
+    .actions,.scorebar,header .meta-badges{ display:none !important; }
+    body{ background:#fff; } section{ break-inside:avoid; border-color:#ccc; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>Form Evaluasi Pelatihan</h1>
+    <p>Konstruksi &amp; Agregasi Data SUSENAS–PODES dengan R — Training R UNNES</p>
+    <div class="meta-badges">
+      <span class="badge">Isian ± 5 menit</span>
+      <span class="badge">Anonim (identitas opsional)</span>
+      <span class="badge">Skor otomatis</span>
+    </div>
+  </header>
+
+  <!-- Live score -->
+  <div class="scorebar" aria-live="polite">
+    <div><span class="big" id="scoreVal">–</span><span class="lbl"> / 5,0</span></div>
+    <div class="track"><i id="scoreFill"></i></div>
+    <span class="pill" id="scorePill" style="background:var(--brand-soft); color:var(--brand)">Belum dinilai</span>
+    <span class="lbl" id="scoreCount">0 dari 16 pertanyaan skala terisi</span>
+  </div>
+
+  <form id="evalForm">
+
+    <!-- Identitas -->
+    <section>
+      <h2><span class="n">i</span> Identitas Peserta <span style="font-weight:400;color:var(--muted);font-size:.8rem;">(opsional)</span></h2>
+      <p class="hint">Boleh dikosongkan bila ingin mengisi secara anonim.</p>
+      <div class="grid2">
+        <label class="field"><span>Nama</span><input type="text" name="nama" autocomplete="name"></label>
+        <label class="field"><span>Instansi / Unit Kerja</span><input type="text" name="instansi"></label>
+        <label class="field"><span>Peran</span>
+          <select name="peran">
+            <option value="">— pilih —</option>
+            <option>Peserta / Staf</option>
+            <option>Dosen / Peneliti</option>
+            <option>Mahasiswa</option>
+            <option>Pegawai BPS / Instansi Pemerintah</option>
+            <option>Lainnya</option>
+          </select>
+        </label>
+        <label class="field"><span>Tanggal Pelatihan</span><input type="date" name="tanggal"></label>
+      </div>
+      <label class="field" style="margin-top:.9rem"><span>Pengalaman R sebelum pelatihan</span>
+        <select name="pengalaman">
+          <option value="">— pilih —</option>
+          <option>Belum pernah / pemula</option>
+          <option>Dasar (pernah pakai sedikit)</option>
+          <option>Menengah</option>
+          <option>Mahir</option>
+        </select>
+      </label>
+    </section>
+
+    <!-- A. Materi -->
+    <section data-scoreblock>
+      <h2><span class="n">A</span> Materi &amp; Konten</h2>
+      <p class="hint">Nilai 1 = Sangat Kurang, 5 = Sangat Baik.</p>
+      <div id="blockA"></div>
+    </section>
+
+    <!-- B. Deliverable (fokus) -->
+    <section data-scoreblock>
+      <h2><span class="n">B</span> Kualitas Deliverable Pelatihan</h2>
+      <p class="hint">Bagian utama: menilai hasil/produk pelatihan yang Anda terima.</p>
+      <div id="blockB"></div>
+    </section>
+
+    <!-- C. Fasilitator -->
+    <section data-scoreblock>
+      <h2><span class="n">C</span> Fasilitator / Instruktur</h2>
+      <p class="hint">Nilai 1 = Sangat Kurang, 5 = Sangat Baik.</p>
+      <div id="blockC"></div>
+    </section>
+
+    <!-- D. Penyelenggaraan -->
+    <section data-scoreblock>
+      <h2><span class="n">D</span> Penyelenggaraan</h2>
+      <p class="hint">Nilai 1 = Sangat Kurang, 5 = Sangat Baik.</p>
+      <div id="blockD"></div>
+    </section>
+
+    <!-- E. Outcome -->
+    <section data-scoreblock>
+      <h2><span class="n">E</span> Hasil / Manfaat</h2>
+      <p class="hint">Nilai 1 = Sangat Tidak Setuju, 5 = Sangat Setuju.</p>
+      <div id="blockE"></div>
+    </section>
+
+    <!-- NPS -->
+    <section>
+      <h2><span class="n">★</span> Rekomendasi</h2>
+      <p class="hint">Seberapa besar kemungkinan Anda merekomendasikan pelatihan ini kepada rekan? (0 = tidak mungkin, 10 = sangat mungkin)</p>
+      <div class="nps" id="npsRow"></div>
+    </section>
+
+    <!-- Terbuka -->
+    <section>
+      <h2><span class="n">✎</span> Masukan Terbuka</h2>
+      <label class="field" style="margin-bottom:.9rem"><span>Bagian / deliverable yang PALING bermanfaat</span>
+        <textarea name="terbaik" placeholder="mis. hand-out langkah demi langkah, script R yang bisa dijalankan ulang…"></textarea></label>
+      <label class="field" style="margin-bottom:.9rem"><span>Bagian yang PERLU DIPERBAIKI</span>
+        <textarea name="perbaikan" placeholder="mis. contoh data kurang, durasi kurang panjang…"></textarea></label>
+      <label class="field" style="margin-bottom:.9rem"><span>Topik lanjutan yang Anda minati</span>
+        <textarea name="lanjutan" placeholder="mis. visualisasi ggplot2, analisis regresi spasial, Quarto lanjutan…"></textarea></label>
+      <label class="field"><span>Saran / komentar lain</span>
+        <textarea name="saran"></textarea></label>
+    </section>
+
+    <div class="actions">
+      <button type="button" class="primary" id="btnSend">✆ Kirim Jawaban</button>
+      <button type="button" id="btnDownload">⬇︎ Unduh CSV</button>
+      <button type="button" id="btnCopy">⧉ Salin Ringkasan</button>
+      <button type="button" id="btnPrint">🖶 Cetak / PDF</button>
+      <button type="reset" id="btnReset">↺ Kosongkan</button>
+    </div>
+    <p class="status" id="sendStatus" role="status" aria-live="polite"></p>
+    <p class="note">Tombol <b>Kirim Jawaban</b> mengirim jawaban Anda langsung ke penyelenggara (via Web3Forms). Bila luring/gagal, gunakan <b>Unduh CSV</b> lalu kirim manual.</p>
+
+  </form>
+
+  <footer>Training R UNNES · SUSENAS–PODES · Data sintetis untuk pelatihan</footer>
+</div>
+
+<script>
+(function(){
+  // =====================================================================
+  //  GANTI baris di bawah dengan Access Key dari https://web3forms.com
+  //  (buka situsnya → masukkan email Anda → salin "Access Key" ke sini).
+  //  Selama masih "GANTI-...", tombol Kirim akan menampilkan pengingat.
+  // =====================================================================
+  var ACCESS_KEY = "3d3aee87-790b-4a98-837b-97f310b20750";
+
+  // ---- Definisi pertanyaan ----
+  var Q = {
+    A: [
+      "Relevansi materi dengan kebutuhan pekerjaan/studi saya",
+      "Kedalaman dan kelengkapan materi",
+      "Kejelasan alur: konstruksi → agregasi data",
+      "Tingkat kesulitan sesuai dengan peserta"
+    ],
+    B: [
+      "Slide presentasi — jelas, terstruktur, dan enak dibaca",
+      "Hand-out — lengkap dan mudah diikuti langkah demi langkah",
+      "Script R — rapi, terdokumentasi, dan dapat dijalankan ulang",
+      "Data sintetis latihan — memadai dan realistis untuk berlatih",
+      "Situs / repositori materi (GitHub Pages) — mudah diakses"
+    ],
+    C: [
+      "Penguasaan materi oleh fasilitator",
+      "Kemampuan menjelaskan dengan mudah dipahami",
+      "Interaksi dan kesediaan menjawab pertanyaan"
+    ],
+    D: [
+      "Pengaturan durasi dan waktu",
+      "Sarana/prasarana atau platform (bila daring)"
+    ],
+    E: [
+      "Pemahaman saya meningkat setelah pelatihan",
+      "Saya dapat menerapkan materi ini pada pekerjaan/studi"
+    ]
+  };
+  var scaleLabels = ["Sangat Kurang","Kurang","Cukup","Baik","Sangat Baik"];
+  var idx = 0;                     // penomoran global pertanyaan skala
+  var TOTAL = Q.A.length+Q.B.length+Q.C.length+Q.D.length+Q.E.length;
+
+  function buildBlock(containerId, arr, prefix){
+    var host = document.getElementById(containerId);
+    arr.forEach(function(text, i){
+      idx++;
+      var name = "q_"+prefix+(i+1);
+      var q = document.createElement("div"); q.className="q";
+      var qt = document.createElement("div"); qt.className="qt";
+      qt.innerHTML = "<b>"+idx+".</b> "+text;
+      q.appendChild(qt);
+      var lk = document.createElement("div"); lk.className="likert";
+      for(var v=1; v<=5; v++){
+        var id = name+"_"+v;
+        var inp = document.createElement("input");
+        inp.type="radio"; inp.name=name; inp.value=v; inp.id=id; inp.className="scoreInput";
+        var lab = document.createElement("label"); lab.setAttribute("for",id);
+        lab.innerHTML = "<span class='num'>"+v+"</span>"+scaleLabels[v-1];
+        lk.appendChild(inp); lk.appendChild(lab);
+      }
+      q.appendChild(lk);
+      host.appendChild(q);
+    });
+  }
+  buildBlock("blockA",Q.A,"A");
+  buildBlock("blockB",Q.B,"B");
+  buildBlock("blockC",Q.C,"C");
+  buildBlock("blockD",Q.D,"D");
+  buildBlock("blockE",Q.E,"E");
+
+  // NPS 0..10
+  var npsRow = document.getElementById("npsRow");
+  for(var n=0; n<=10; n++){
+    var id="nps_"+n;
+    var inp=document.createElement("input"); inp.type="radio"; inp.name="nps"; inp.value=n; inp.id=id;
+    var lab=document.createElement("label"); lab.setAttribute("for",id); lab.textContent=n;
+    npsRow.appendChild(inp); npsRow.appendChild(lab);
+  }
+
+  // ---- Skor langsung ----
+  var form = document.getElementById("evalForm");
+  function updateScore(){
+    var sum=0, cnt=0;
+    document.querySelectorAll(".likert").forEach(function(g){
+      var sel=g.querySelector("input:checked");
+      if(sel){ sum+=+sel.value; cnt++; }
+    });
+    var el=document.getElementById("scoreVal"),
+        fill=document.getElementById("scoreFill"),
+        pill=document.getElementById("scorePill"),
+        cntEl=document.getElementById("scoreCount");
+    cntEl.textContent = cnt+" dari "+TOTAL+" pertanyaan skala terisi";
+    if(cnt===0){
+      el.textContent="–"; fill.style.width="0";
+      pill.textContent="Belum dinilai"; pill.style.background="var(--brand-soft)"; pill.style.color="var(--brand)";
+      return;
+    }
+    var avg=sum/cnt;
+    el.textContent=avg.toFixed(2).replace(".",",");
+    fill.style.width=(avg/5*100)+"%";
+    var col,txt;
+    if(avg>=4.2){col="var(--good)";txt="Sangat Baik";}
+    else if(avg>=3.4){col="var(--brand)";txt="Baik";}
+    else if(avg>=2.6){col="var(--warn)";txt="Cukup";}
+    else {col="var(--bad)";txt="Perlu Perbaikan";}
+    fill.style.background=col;
+    pill.textContent=txt; pill.style.background="transparent"; pill.style.color=col;
+    pill.style.border="1px solid "+col;
+  }
+  form.addEventListener("change", updateScore);
+
+  // ---- Kumpulkan jawaban ----
+  function collect(){
+    var d=new FormData(form), o={};
+    d.forEach(function(v,k){ o[k]=v; });
+    // rata-rata per blok
+    function blockAvg(prefix,len){
+      var s=0,c=0; for(var i=1;i<=len;i++){ var v=o["q_"+prefix+i]; if(v){s+=+v;c++;} }
+      return c? (s/c) : null;
+    }
+    o._avg_A=blockAvg("A",Q.A.length);
+    o._avg_B=blockAvg("B",Q.B.length);
+    o._avg_C=blockAvg("C",Q.C.length);
+    o._avg_D=blockAvg("D",Q.D.length);
+    o._avg_E=blockAvg("E",Q.E.length);
+    return o;
+  }
+
+  function ts(){ // stempel waktu lokal browser
+    var dt=new Date(), p=function(x){return (x<10?"0":"")+x;};
+    return dt.getFullYear()+"-"+p(dt.getMonth()+1)+"-"+p(dt.getDate())+"_"+p(dt.getHours())+p(dt.getMinutes());
+  }
+
+  // Unduh CSV
+  document.getElementById("btnDownload").addEventListener("click", function(){
+    var o=collect();
+    var keys=Object.keys(o);
+    var esc=function(x){ x=(x==null?"":String(x)); return '"'+x.replace(/"/g,'""')+'"'; };
+    var csv=keys.map(esc).join(",")+"\r\n"+keys.map(function(k){return esc(o[k]);}).join(",");
+    var blob=new Blob(["﻿"+csv],{type:"text/csv;charset=utf-8;"});
+    var a=document.createElement("a");
+    a.href=URL.createObjectURL(blob);
+    a.download="evaluasi_pelatihan_"+ts()+".csv";
+    document.body.appendChild(a); a.click(); a.remove();
+  });
+
+  // Salin ringkasan
+  document.getElementById("btnCopy").addEventListener("click", function(){
+    var o=collect();
+    var f=function(x){ return x==null?"-":x.toFixed(2).replace(".",","); };
+    var lines=[
+      "EVALUASI PELATIHAN — SUSENAS–PODES dengan R (Training R UNNES)",
+      "Nama     : "+(o.nama||"-"),
+      "Instansi : "+(o.instansi||"-"),
+      "Peran    : "+(o.peran||"-")+"   Tanggal: "+(o.tanggal||"-"),
+      "",
+      "RATA-RATA PER ASPEK (skala 1–5):",
+      "  A. Materi & Konten     : "+f(o._avg_A),
+      "  B. Deliverable         : "+f(o._avg_B),
+      "  C. Fasilitator         : "+f(o._avg_C),
+      "  D. Penyelenggaraan     : "+f(o._avg_D),
+      "  E. Hasil/Manfaat       : "+f(o._avg_E),
+      "  Rekomendasi (NPS 0–10) : "+(o.nps||"-"),
+      "",
+      "Paling bermanfaat : "+(o.terbaik||"-"),
+      "Perlu diperbaiki  : "+(o.perbaikan||"-"),
+      "Topik lanjutan    : "+(o.lanjutan||"-"),
+      "Saran lain        : "+(o.saran||"-")
+    ].join("\n");
+    navigator.clipboard.writeText(lines).then(function(){
+      var b=document.getElementById("btnCopy"), t=b.textContent;
+      b.textContent="✓ Tersalin!"; setTimeout(function(){b.textContent=t;},1600);
+    }, function(){ alert(lines); });
+  });
+
+  document.getElementById("btnPrint").addEventListener("click", function(){ window.print(); });
+  document.getElementById("btnReset").addEventListener("click", function(){
+    setTimeout(updateScore,0);
+    var s=document.getElementById("sendStatus"); s.textContent="";
+  });
+
+  // ---- Kirim ke Web3Forms ----
+  var f2=function(x){ return x==null?"":(+x).toFixed(2).replace(".",","); };
+  document.getElementById("btnSend").addEventListener("click", function(){
+    var status=document.getElementById("sendStatus");
+    if(ACCESS_KEY.indexOf("GANTI")===0){
+      status.style.color="var(--bad)";
+      status.textContent="⚠ Access Key Web3Forms belum diisi. Buka web3forms.com, salin Access Key, lalu tempel di baris ACCESS_KEY pada file ini.";
+      return;
+    }
+    var o=collect();
+    var cnt=document.querySelectorAll(".likert input:checked").length;
+    if(cnt===0 && !confirm("Belum ada penilaian skala yang diisi. Tetap kirim?")) return;
+
+    var payload={
+      access_key: ACCESS_KEY,
+      subject: "Evaluasi Pelatihan R UNNES — "+(o.nama||"Anonim"),
+      from_name: o.nama||"Peserta Anonim",
+      Nama:o.nama||"-", Instansi:o.instansi||"-", Peran:o.peran||"-",
+      Tanggal:o.tanggal||"-", Pengalaman_R:o.pengalaman||"-",
+      "Rata2 A - Materi": f2(o._avg_A),
+      "Rata2 B - Deliverable": f2(o._avg_B),
+      "Rata2 C - Fasilitator": f2(o._avg_C),
+      "Rata2 D - Penyelenggaraan": f2(o._avg_D),
+      "Rata2 E - Hasil": f2(o._avg_E),
+      "NPS (0-10)": o.nps||"-",
+      "Paling bermanfaat": o.terbaik||"-",
+      "Perlu diperbaiki": o.perbaikan||"-",
+      "Topik lanjutan": o.lanjutan||"-",
+      "Saran lain": o.saran||"-"
+    };
+    Object.keys(o).forEach(function(k){ if(k.indexOf("q_")===0) payload[k]=o[k]; }); // skor tiap butir
+
+    var btn=this;
+    status.style.color="var(--muted)"; status.textContent="Mengirim…"; btn.disabled=true;
+    fetch("https://api.web3forms.com/submit",{
+      method:"POST",
+      headers:{ "Content-Type":"application/json", "Accept":"application/json" },
+      body: JSON.stringify(payload)
+    }).then(function(r){ return r.json(); }).then(function(res){
+      btn.disabled=false;
+      if(res && res.success){
+        status.style.color="var(--good)";
+        status.textContent="✓ Terima kasih! Jawaban Anda berhasil terkirim.";
+        btn.textContent="✓ Terkirim";
+      } else {
+        status.style.color="var(--bad)";
+        status.textContent="Gagal mengirim: "+((res&&res.message)||"coba lagi.");
+      }
+    }).catch(function(){
+      btn.disabled=false;
+      status.style.color="var(--bad)";
+      status.textContent="Gagal terhubung ke server. Periksa koneksi, lalu coba lagi — atau gunakan Unduh CSV.";
+    });
+  });
+})();
+</script>
+</body>
+</html>
