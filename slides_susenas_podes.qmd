@@ -600,18 +600,6 @@ Pastikan **tahun Susenas dan PODES kompatibel** (misal Susenas 2022 + PODES 2021
     <td style="padding:0.4em;">Fuzzy GWC clustering</td>
     <td style="padding:0.4em;"><em>Data in Brief</em></td>
   </tr>
-  <tr>
-    <td style="padding:0.4em;">Smart village & digital divide</td>
-    <td style="padding:0.4em;">PODES 2021</td>
-    <td style="padding:0.4em;">Factor analysis (spatial)</td>
-    <td style="padding:0.4em;"><em>ScienceDirect</em> 2025</td>
-  </tr>
-  <tr style="background:#fdedec;">
-    <td style="padding:0.4em;">Cash transfer & inequality</td>
-    <td style="padding:0.4em;">Susenas 2019–2022</td>
-    <td style="padding:0.4em;">PSM (propensity score)</td>
-    <td style="padding:0.4em;"><em>Priviet Social Sciences J.</em></td>
-  </tr>
 </tbody>
 </table>
 ```
