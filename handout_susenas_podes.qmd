@@ -422,7 +422,7 @@ Studi ini menginvestigasi hubungan antara informalitas pekerjaan orang tua denga
 
 ### Paper 2: JKN, Disabilitas & Perlindungan Keuangan (Susenas)
 
-**Azizatunnisa', L., Probandari, A., Kuper, H., & Banks, L.M. (2025).** *Health insurance coverage, healthcare use, and financial protection amongst people with disabilities in Indonesia: analysis of the 2021 National Socioeconomic Survey.* **The Lancet Regional Health – Southeast Asia** (Elsevier, **Q1 Scopus**).
+**Azizatunnisa', L., Probandari, A., Kuper, H., & Banks, L.M. (2025).** *Health insurance coverage, healthcare use, and financial protection amongst people with disabilities in Indonesia: analysis of the 2021 National Socioeconomic Survey.* **The Lancet Regional Health – Southeast Asia** (Elsevier, **Q1 Scopus**). [Akses artikel (fulltext)](https://www.thelancet.com/journals/lansea/article/PIIS2772-3682%2825%2900102-7/fulltext).
 
 **Ringkasan:**
 
@@ -520,7 +520,7 @@ Contoh kalimat metodologi:
 
 3. Khoiruddin, M.A., Suman, A., Prasetyia, F., Susilo, & Yuniashri, E. (2025). Informality and multidimensional child poverty: evidence from urban and rural Indonesia. *Development Studies Research*, 12(1). DOI: [10.1080/21665095.2025.2533852](https://www.tandfonline.com/doi/full/10.1080/21665095.2025.2533852)
 
-4. Azizatunnisa', L., Probandari, A., Kuper, H., & Banks, L.M. (2025). Health insurance coverage, healthcare use, and financial protection amongst people with disabilities in Indonesia: analysis of the 2021 National Socioeconomic Survey. *The Lancet Regional Health – Southeast Asia*. https://www.thelancet.com/journals/lansea/article/PIIS2772-3682(25)00102-7/fulltext
+4. Azizatunnisa', L., Probandari, A., Kuper, H., & Banks, L.M. (2025). Health insurance coverage, healthcare use, and financial protection amongst people with disabilities in Indonesia: analysis of the 2021 National Socioeconomic Survey. *The Lancet Regional Health – Southeast Asia*. [www.thelancet.com/journals/lansea/article/PIIS2772-3682(25)00102-7/fulltext](https://www.thelancet.com/journals/lansea/article/PIIS2772-3682%2825%2900102-7/fulltext)
 
 5. Kurniawan, R., Nasution, B.I., Agustina, N., & Yuniarto, B. (2021). Revisiting social vulnerability analysis in Indonesia data. *Data in Brief*, 39, 107743. DOI: [10.1016/j.dib.2021.107743](https://doi.org/10.1016/j.dib.2021.107743)
 

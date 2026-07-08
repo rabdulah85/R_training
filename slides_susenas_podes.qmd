@@ -539,7 +539,7 @@ Pastikan **tahun Susenas dan PODES kompatibel** (misal Susenas 2022 + PODES 2021
 ### 📄 Azizatunnisa' et al. (2025)
 **Judul:** *Health insurance coverage, healthcare use, and financial protection amongst people with disabilities in Indonesia: analysis of the 2021 National Socioeconomic Survey*
 **Penulis:** Luthfi Azizatunnisa', Ari Probandari, Hannah Kuper, Lena Morgon Banks
-**Jurnal:** *The Lancet Regional Health – Southeast Asia* (**Scopus Q1**)
+**Jurnal:** *The Lancet Regional Health – Southeast Asia* (**Scopus Q1**) — [akses artikel](https://www.thelancet.com/journals/lansea/article/PIIS2772-3682%2825%2900102-7/fulltext)
 
 **Data:** Susenas Maret 2021 (*n* = 1.277.497 individu)  
 **Metode:** Multivariate logistic regression  
@@ -702,7 +702,7 @@ Pastikan **tahun Susenas dan PODES kompatibel** (misal Susenas 2022 + PODES 2021
 **Paper Kunci:**
 
 - Khoiruddin et al. (2025). *Development Studies Research*, DOI: [10.1080/21665095.2025.2533852](https://www.tandfonline.com/doi/full/10.1080/21665095.2025.2533852)
-- Azizatunnisa' et al. (2025). *The Lancet Regional Health – Southeast Asia*, PIIS2772-3682(25)00102-7
+- Azizatunnisa' et al. (2025). *The Lancet Regional Health – Southeast Asia*, [PIIS2772-3682(25)00102-7](https://www.thelancet.com/journals/lansea/article/PIIS2772-3682%2825%2900102-7/fulltext)
 - Kurniawan et al. (2021). *Data in Brief*, DOI: [10.1016/j.dib.2021.107743](https://doi.org/10.1016/j.dib.2021.107743)
 
 ---
