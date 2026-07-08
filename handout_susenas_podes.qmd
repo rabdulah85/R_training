@@ -134,7 +134,7 @@ Untuk ART berumur 2 tahun ke atas, menggunakan kerangka **Washington Group Short
 - Kesulitan merawat diri sendiri
 - Kesulitan berkomunikasi
 
-> **Aplikasi riset:** Blok X Susenas telah digunakan dalam studi JKN dan disabilitas yang dipublikasikan di *eClinicalMedicine* (Lancet Discovery Science), dengan total sampel 1,27 juta individu.
+> **Aplikasi riset:** Blok X Susenas telah digunakan dalam studi JKN dan disabilitas yang dipublikasikan di *The Lancet Regional Health – Southeast Asia*, dengan total sampel 1,27 juta individu (Azizatunnisa' et al., 2025).
 
 #### Blok XI — Keluhan Kesehatan & Rawat Jalan
 
@@ -422,7 +422,7 @@ Studi ini menginvestigasi hubungan antara informalitas pekerjaan orang tua denga
 
 ### Paper 2: JKN, Disabilitas & Perlindungan Keuangan (Susenas)
 
-**Zainudin, F., dkk. (2025).** *Health insurance coverage, healthcare use, and financial protection amongst people with disabilities in Indonesia: analysis of the 2021 National Socioeconomic Survey.* **eClinicalMedicine** (The Lancet Discovery Science, **Q1 Scopus**), PMCID: PMC12274863.
+**Azizatunnisa', L., Probandari, A., Kuper, H., & Banks, L.M. (2025).** *Health insurance coverage, healthcare use, and financial protection amongst people with disabilities in Indonesia: analysis of the 2021 National Socioeconomic Survey.* **The Lancet Regional Health – Southeast Asia** (Elsevier, **Q1 Scopus**).
 
 **Ringkasan:**
 
@@ -540,7 +540,7 @@ Contoh kalimat metodologi:
 
 3. Fernandez, M., et al. (2025). Informality and multidimensional child poverty: evidence from urban and rural Indonesia. *Development Studies Research*, 12(1). DOI: 10.1080/21665095.2025.2533852
 
-4. Zainudin, F., et al. (2025). Health insurance coverage, healthcare use, and financial protection amongst people with disabilities in Indonesia: analysis of the 2021 National Socioeconomic Survey. *eClinicalMedicine* (The Lancet Discovery Science). PMCID: PMC12274863.
+4. Azizatunnisa', L., Probandari, A., Kuper, H., & Banks, L.M. (2025). Health insurance coverage, healthcare use, and financial protection amongst people with disabilities in Indonesia: analysis of the 2021 National Socioeconomic Survey. *The Lancet Regional Health – Southeast Asia*. https://www.thelancet.com/journals/lansea/article/PIIS2772-3682(25)00102-7/fulltext
 
 5. Kurniawan, R., et al. (2021). Revisiting social vulnerability analysis in Indonesia data. *Data in Brief*, 39, 107743. DOI: 10.1016/j.dib.2021.107743
 
