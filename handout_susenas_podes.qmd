@@ -386,7 +386,7 @@ drop if _merge == 2  // hanya pertahankan yang match
 ### Catatan Penting
 
 ::: {.callout-warning}
-**Kompatibilitas tahun:** Susenas dan PODES tidak selalu satu tahun. Gunakan PODES tahun **terdekat sebelumnya**. Contoh: Susenas 2022 + PODES 2021 adalah kombinasi yang valid dan umum digunakan (lihat Fernandez et al., 2025).
+**Kompatibilitas tahun:** Susenas dan PODES tidak selalu satu tahun. Gunakan PODES tahun **terdekat sebelumnya**. Contoh: Susenas 2022 + PODES 2021 adalah kombinasi yang valid dan umum digunakan (lihat Khoiruddin et al., 2025).
 :::
 
 ::: {.callout-note}
@@ -397,11 +397,11 @@ drop if _merge == 2  // hanya pertahankan yang match
 
 ## Contoh Penelitian Terindeks Scopus
 
-Bagian ini menyajikan empat contoh paper yang diterbitkan di jurnal terindeks Scopus menggunakan Susenas dan/atau PODES sebagai sumber data utama. Paper-paper ini dapat dijadikan **rujukan metodologis** dan **inspirasi topik riset**.
+Bagian ini menyajikan tiga contoh paper yang diterbitkan di jurnal terindeks Scopus menggunakan Susenas dan/atau PODES sebagai sumber data utama. Paper-paper ini dapat dijadikan **rujukan metodologis** dan **inspirasi topik riset**.
 
 ### Paper 1: Kemiskinan Anak & Informalitas (Susenas + PODES)
 
-**Fernandez, M., dkk. (2025).** *Informality and multidimensional child poverty: evidence from urban and rural Indonesia.* **Development Studies Research** (Taylor & Francis), DOI: 10.1080/21665095.2025.2533852.
+**Khoiruddin, M.A., Suman, A., Prasetyia, F., Susilo, & Yuniashri, E. (2025).** *Informality and multidimensional child poverty: evidence from urban and rural Indonesia.* **Development Studies Research** (Taylor & Francis), DOI: [10.1080/21665095.2025.2533852](https://www.tandfonline.com/doi/full/10.1080/21665095.2025.2533852).
 
 **Ringkasan:**
 
@@ -443,7 +443,7 @@ Studi ini mengevaluasi cakupan Jaminan Kesehatan Nasional (JKN) dan hubungannya 
 
 ### Paper 3: Kerentanan Sosial & Data Set (Susenas)
 
-**Kurniawan, R., dkk. (2021).** *Revisiting social vulnerability analysis in Indonesia data.* **Data in Brief** (Elsevier, **Scopus-indexed**), DOI: 10.1016/j.dib.2021.107743.
+**Kurniawan, R., Nasution, B.I., Agustina, N., & Yuniarto, B. (2021).** *Revisiting social vulnerability analysis in Indonesia data.* **Data in Brief** (Elsevier, **Scopus-indexed**), DOI: [10.1016/j.dib.2021.107743](https://doi.org/10.1016/j.dib.2021.107743).
 
 **Ringkasan:**
 
@@ -456,26 +456,6 @@ Paper ini mempublikasikan *dataset* kerentanan sosial Indonesia yang dikonstruks
 **Metodologi:** Kompilasi indikator, normalisasi, FGWC clustering, pemetaan spasial.
 
 **Relevansi untuk peneliti:** Contoh bagaimana Susenas digunakan untuk membangun **composite vulnerability index** yang dapat diintegrasikan dengan data PODES atau data spasial lainnya.
-
----
-
-### Paper 4: Kemiskinan Multidimensi & Gender (Susenas)
-
-**Wahyuni, E.T., & Wongkaren, T.S. (2022).** *Gender Determinant on Multidimensional Poverty Index: Evidence from Indonesia.* **Soseco** (Universitas Negeri Malang, **Sinta 2**), DOI: 10.17977/um062v5i22022.
-
-**Ringkasan:**
-
-Studi ini mengeksplorasi kontribusi determinan gender terhadap kemiskinan multidimensi di Indonesia menggunakan metode **Alkire-Foster (AF)**. Kemiskinan diukur dari dimensi pendidikan (tahun sekolah, partisipasi sekolah), kesehatan (nutrisi, kematian anak), dan standar hidup (listrik, air, sanitasi, bahan bakar, perumahan, aset).
-
-**Data yang digunakan:**
-
-- Susenas 2018
-
-**Metodologi:** Logit estimation dengan Multidimensional Poverty Index (MPI) berbasis Alkire-Foster.
-
-**Temuan kunci:** ~10% penduduk Indonesia termasuk "rentan miskin" dan 3% "sangat miskin". Deprivasi paling dominan adalah tahun sekolah, kepemilikan JKN, dan kepemilikan aset.
-
-**Relevansi untuk peneliti:** Panduan praktis untuk mengimplementasikan **metodologi Alkire-Foster** menggunakan data Susenas.
 
 ---
 
@@ -538,15 +518,13 @@ Contoh kalimat metodologi:
 
 2. BPS — Statistics Indonesia. (2021). *Kuesioner Pendataan Potensi Desa 2021*. Jakarta: BPS.
 
-3. Fernandez, M., et al. (2025). Informality and multidimensional child poverty: evidence from urban and rural Indonesia. *Development Studies Research*, 12(1). DOI: 10.1080/21665095.2025.2533852
+3. Khoiruddin, M.A., Suman, A., Prasetyia, F., Susilo, & Yuniashri, E. (2025). Informality and multidimensional child poverty: evidence from urban and rural Indonesia. *Development Studies Research*, 12(1). DOI: [10.1080/21665095.2025.2533852](https://www.tandfonline.com/doi/full/10.1080/21665095.2025.2533852)
 
 4. Azizatunnisa', L., Probandari, A., Kuper, H., & Banks, L.M. (2025). Health insurance coverage, healthcare use, and financial protection amongst people with disabilities in Indonesia: analysis of the 2021 National Socioeconomic Survey. *The Lancet Regional Health – Southeast Asia*. https://www.thelancet.com/journals/lansea/article/PIIS2772-3682(25)00102-7/fulltext
 
-5. Kurniawan, R., et al. (2021). Revisiting social vulnerability analysis in Indonesia data. *Data in Brief*, 39, 107743. DOI: 10.1016/j.dib.2021.107743
+5. Kurniawan, R., Nasution, B.I., Agustina, N., & Yuniarto, B. (2021). Revisiting social vulnerability analysis in Indonesia data. *Data in Brief*, 39, 107743. DOI: [10.1016/j.dib.2021.107743](https://doi.org/10.1016/j.dib.2021.107743)
 
-6. Wahyuni, E.T., & Wongkaren, T.S. (2022). Gender Determinant on Multidimensional Poverty Index: Evidence from Indonesia. *Soseco — Jurnal Ilmu Sosial dan Ilmu Ekonomi*, 5(2). DOI: 10.17977/um062v5i22022
-
-7. Duke University Libraries. (n.d.). *Village Potential Statistics (PODES) Dataset — Indonesia*. Diakses dari: https://library.duke.edu/data/sources/podes
+6. Duke University Libraries. (n.d.). *Village Potential Statistics (PODES) Dataset — Indonesia*. Diakses dari: https://library.duke.edu/data/sources/podes
 
 ---
 

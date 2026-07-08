@@ -504,7 +504,7 @@ Pastikan **tahun Susenas dan PODES kompatibel** (misal Susenas 2022 + PODES 2021
 ```
 
 > *"...this study utilized data from the 2021 Village Potential Statistics (Podes) to obtain information of natural disasters such as floods, flash floods, landslides, and droughts at the village level."*
-> — Fernandez et al. (2025), *Development Studies Research*
+> — Khoiruddin et al. (2025), *Development Studies Research*
 
 ---
 
@@ -517,8 +517,9 @@ Pastikan **tahun Susenas dan PODES kompatibel** (misal Susenas 2022 + PODES 2021
 ## Paper 1 — Kemiskinan Anak Multidimensi
 
 ::: {.callout-note icon=false}
-### 📄 Fernandez et al. (2025)
-**Judul:** *Informality and multidimensional child poverty: evidence from urban and rural Indonesia*  
+### 📄 Khoiruddin et al. (2025)
+**Judul:** *Informality and multidimensional child poverty: evidence from urban and rural Indonesia*
+**Penulis:** M. Afif Khoiruddin, Agus Suman, Ferry Prasetyia, Susilo, Erlyn Yuniashri (Universitas Brawijaya)
 **Jurnal:** *Development Studies Research* (Taylor & Francis, **Scopus-indexed**)
 
 **Data:** Susenas 2022 + PODES 2021  
@@ -554,8 +555,9 @@ Pastikan **tahun Susenas dan PODES kompatibel** (misal Susenas 2022 + PODES 2021
 
 ::: {.callout-note icon=false}
 ### 📄 Kurniawan et al. (2021)
-**Judul:** *Revisiting social vulnerability analysis in Indonesia data*  
-**Jurnal:** *Data in Brief* (Elsevier, **Scopus-indexed**)
+**Judul:** *Revisiting social vulnerability analysis in Indonesia data*
+**Penulis:** Robert Kurniawan, Bahrul Ilmi Nasution, Neli Agustina, Budi Yuniarto
+**Jurnal:** *Data in Brief* (Elsevier, **Scopus-indexed**) — DOI: [10.1016/j.dib.2021.107743](https://doi.org/10.1016/j.dib.2021.107743)
 
 **Data:** Susenas 2017  
 **Metode:** Fuzzy Geographically Weighted Clustering (FGWC)  
@@ -564,23 +566,6 @@ Pastikan **tahun Susenas dan PODES kompatibel** (misal Susenas 2022 + PODES 2021
 :::
 
 **Relevansi metodologis:** Contoh bagaimana Susenas digunakan untuk membangun **composite index** yang dapat digabung dengan data PODES atau data spasial.
-
----
-
-## Paper 4 — Kemiskinan Multidimensi & Gender
-
-::: {.callout-note icon=false}
-### 📄 Wahyuni & Wongkaren (2022)
-**Judul:** *Gender Determinant on Multidimensional Poverty Index: Evidence from Indonesia*  
-**Jurnal:** *Soseco — Jurnal Ilmu Sosial dan Ilmu Ekonomi* (UGM, **Sinta 2 / Scopus evaluated**)
-
-**Data:** Susenas 2018  
-**Metode:** Logit estimation  
-**Temuan:** Sekitar 10% penduduk termasuk kelompok "rentan miskin"; kemiskinan multidimensi paling dipengaruhi oleh tahun sekolah, kepemilikan JKN, dan aset rumah tangga.  
-**Variabel kunci:** Indeks kemiskinan multidimensi berbasis Alkire-Foster (AF method), variabel gender, pendidikan, akses layanan
-:::
-
-**Relevansi metodologis:** Contoh aplikasi **Alkire-Foster methodology** menggunakan Susenas.
 
 ---
 
@@ -616,18 +601,12 @@ Pastikan **tahun Susenas dan PODES kompatibel** (misal Susenas 2022 + PODES 2021
     <td style="padding:0.4em;"><em>Data in Brief</em></td>
   </tr>
   <tr>
-    <td style="padding:0.4em;">Kemiskinan multidimensi & gender</td>
-    <td style="padding:0.4em;">Susenas 2018</td>
-    <td style="padding:0.4em;">Logit (Alkire-Foster)</td>
-    <td style="padding:0.4em;"><em>Soseco</em> (UGM)</td>
-  </tr>
-  <tr style="background:#fdedec;">
     <td style="padding:0.4em;">Smart village & digital divide</td>
     <td style="padding:0.4em;">PODES 2021</td>
     <td style="padding:0.4em;">Factor analysis (spatial)</td>
     <td style="padding:0.4em;"><em>ScienceDirect</em> 2025</td>
   </tr>
-  <tr>
+  <tr style="background:#fdedec;">
     <td style="padding:0.4em;">Cash transfer & inequality</td>
     <td style="padding:0.4em;">Susenas 2019–2022</td>
     <td style="padding:0.4em;">PSM (propensity score)</td>
@@ -722,10 +701,9 @@ Pastikan **tahun Susenas dan PODES kompatibel** (misal Susenas 2022 + PODES 2021
 
 **Paper Kunci:**
 
-- Fernandez et al. (2025). *Development Studies Research*, DOI: 10.1080/21665095.2025.2533852
+- Khoiruddin et al. (2025). *Development Studies Research*, DOI: [10.1080/21665095.2025.2533852](https://www.tandfonline.com/doi/full/10.1080/21665095.2025.2533852)
 - Azizatunnisa' et al. (2025). *The Lancet Regional Health – Southeast Asia*, PIIS2772-3682(25)00102-7
-- Kurniawan et al. (2021). *Data in Brief*, DOI: 10.1016/j.dib.2021.107743
-- Wahyuni & Wongkaren (2022). *Soseco*, DOI: 10.17977/um062v5i22022
+- Kurniawan et al. (2021). *Data in Brief*, DOI: [10.1016/j.dib.2021.107743](https://doi.org/10.1016/j.dib.2021.107743)
 
 ---
 
