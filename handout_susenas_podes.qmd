@@ -1,0 +1,564 @@
+---
+title: "Anatomi Data Susenas & PODES"
+subtitle: "Panduan Komprehensif untuk Peneliti Ekonometrika"
+author: "Research Training in Econometrics"
+date: "7 Juli 2026"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    toc-title: "Daftar Isi"
+    number-sections: true
+    theme: cosmo
+    highlight-style: github
+    code-fold: false
+    embed-resources: true
+  docx:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    highlight-style: github
+execute:
+  echo: false
+  warning: false
+---
+
+```{=html}
+<div style="background:linear-gradient(135deg,#1a5276,#145a32); color:white; padding:1.5em 2em; border-radius:10px; margin-bottom:1.5em;">
+<h2 style="margin:0; color:white;">🎓 Research Training in Econometrics</h2>
+<p style="margin:0.3em 0 0 0; opacity:0.9;">Modul Pendahuluan — Anatomi Susenas & PODES | Juli 2026</p>
+</div>
+```
+
+## Pendahuluan: Mengapa Data BPS?
+
+Dalam penelitian ekonomi dan sosial Indonesia, dua sumber data utama yang menjadi tulang punggung literatur akademik adalah **Survei Sosial Ekonomi Nasional (Susenas)** dan **Pendataan Potensi Desa (PODES)**, keduanya diselenggarakan oleh Badan Pusat Statistik (BPS). Kedua data ini telah digunakan secara luas dalam ratusan publikasi terindeks Scopus dan Web of Science, mencakup topik kemiskinan, kesehatan, pendidikan, ketahanan pangan, infrastruktur desa, hingga dampak bencana alam.
+
+Bagi peneliti ekonometrika, memahami **anatomi** kedua dataset ini — struktur kuesioner, skema sampling, unit analisis, dan variabel kunci — adalah prasyarat sebelum melakukan analisis apa pun. Handout ini menyajikan panduan tersebut secara komprehensif.
+
+---
+
+## Susenas: Survei Sosial Ekonomi Nasional
+
+### Sejarah Singkat & Konteks
+
+Susenas pertama kali diselenggarakan pada tahun **1963** dan telah menjadi instrumen statistik utama BPS dalam mengukur kesejahteraan rumah tangga Indonesia. Sejak tahun 2011, Susenas diselenggarakan dua kali per tahun:
+
+- **Susenas Maret** (gelombang utama): sampel besar (~320.000 rumah tangga), digunakan untuk menghitung angka kemiskinan nasional dan indikator SDGs.
+- **Susenas September**: sampel lebih kecil (~75.000 rumah tangga), digunakan untuk memperbarui estimasi kemiskinan pertengahan tahun.
+
+Susenas Maret juga sering disebut sebagai **Kor** karena berisi kuesioner inti (*core*) yang mencakup semua rumah tangga. Kuesioner **Panel** (modul tematik khusus) diberikan kepada sub-sampel tertentu.
+
+### Cakupan & Representativitas
+
+| Aspek | Keterangan |
+|-------|------------|
+| **Jumlah sampel (Maret)** | ±320.000 rumah tangga |
+| **Level estimasi** | Nasional, Provinsi, Kabupaten/Kota |
+| **Stratifikasi** | Perkotaan dan Perdesaan |
+| **Metode sampling** | Two-stage stratified cluster sampling |
+| **Unit cacah** | Rumah tangga (dan individu anggotanya) |
+| **Periode referensi** | Maret (bulan survei) |
+
+::: {.callout-important}
+Karena Susenas menggunakan **stratified cluster sampling**, semua analisis **wajib menggunakan sampling weights**. Mengabaikan bobot akan menghasilkan estimasi yang bias dan tidak representatif terhadap populasi.
+:::
+
+### Struktur Kuesioner Kor (VSEN23.K)
+
+Kuesioner Kor Susenas 2023 terdiri dari 23 blok, yang dapat dikelompokkan sebagai berikut:
+
+#### Blok Administrasi (Blok I–III)
+
+- **Blok I** — Keterangan Tempat: kode provinsi, kabupaten/kota, kecamatan, desa/kelurahan, klasifikasi perkotaan/perdesaan, koordinat GPS rumah tangga.
+- **Blok II** — Keterangan Pencacahan: nama pencacah, pengawas, tanggal, hasil pencacahan (lengkap/tidak lengkap/menolak/pindah).
+- **Blok III** — Ringkasan: jumlah ART, ART usia 0–4 tahun, ART usia 5 tahun ke atas, perempuan pernah kawin.
+
+#### Blok IV — Keterangan Demografi
+
+Blok ini adalah **roster** yang mencatat semua Anggota Rumah Tangga (ART) beserta karakteristik dasarnya:
+
+- Nama dan nomor urut ART
+- Hubungan dengan KRT (kepala, pasangan, anak kandung, cucu, dll.)
+- Status perkawinan (belum kawin, kawin, cerai hidup, cerai mati)
+- Jenis kelamin
+- Tanggal lahir dan umur
+- Usia perkawinan pertama
+
+#### Blok V — Dokumen Kependudukan
+
+- Kepemilikan Buku/Akta Nikah (dari KUA/Catatan Sipil)
+- Nomor Urut Keluarga
+- Kepemilikan NIK (Nomor Induk Kependudukan) — 16 digit
+- Kepemilikan Akta Kelahiran
+
+#### Blok VI — Migrasi & Pendidikan
+
+Blok ini mencakup informasi migrasi dan pendidikan untuk ART 5 tahun ke atas:
+
+- **Migrasi**: Tempat lahir dan tempat tinggal 5 tahun yang lalu (provinsi + kab/kota)
+- **Prasekolah**: Partisipasi dan jenis pendidikan prasekolah (TK, PAUD, RA, Kelompok Bermain, dll.)
+- **Literasi**: Kemampuan baca-tulis huruf Latin, Arab, dan huruf lainnya
+- **Sekolah**: Status (masih/pernah/tidak pernah), jenjang tertinggi yang diikuti, ijazah tertinggi
+
+> **Catatan metodologis:** Variabel jenjang pendidikan dari Blok VI adalah salah satu **variabel paling sering digunakan** dalam studi returns to education, kemiskinan multidimensi, dan determinan kesehatan menggunakan Susenas.
+
+#### Blok VII — Tabungan, Inklusi Keuangan & Ketenagakerjaan
+
+- Kepemilikan rekening tabungan di lembaga keuangan (bank, koperasi)
+- Kegiatan utama seminggu terakhir: bekerja, sekolah, mengurus RT, lainnya
+- Status pekerjaan (majikan, buruh dengan upah, buruh tanpa upah, pekerja keluarga, dll.)
+- Lapangan usaha (pertanian, industri, perdagangan, dll.)
+- Jenis pekerjaan (KBJI)
+
+#### Blok VIII — Teknologi Informasi & Komunikasi
+
+- Penggunaan telepon seluler/HP dalam 3 bulan terakhir
+- Penggunaan komputer/tablet dalam 3 bulan terakhir
+- Akses dan penggunaan internet dalam 3 bulan terakhir
+- Tempat mengakses internet
+
+#### Blok IX — Perjalanan & Korban Kejahatan
+
+- Perjalanan wisata (bukan rutin, bukan untuk kerja/sekolah) dalam setahun terakhir
+- Pernah menjadi korban kejahatan (pencurian, penganiayaan, pelecehan seksual, dll.) dalam setahun terakhir
+
+#### Blok X — Gangguan Fungsional (Disabilitas)
+
+Untuk ART berumur 2 tahun ke atas, menggunakan kerangka **Washington Group Short Set (WG-SS)**:
+
+- Kesulitan melihat (bahkan dengan kacamata)
+- Kesulitan mendengar (bahkan dengan alat bantu dengar)
+- Kesulitan berjalan/naik tangga
+- Kesulitan mengingat atau berkonsentrasi
+- Kesulitan merawat diri sendiri
+- Kesulitan berkomunikasi
+
+> **Aplikasi riset:** Blok X Susenas telah digunakan dalam studi JKN dan disabilitas yang dipublikasikan di *eClinicalMedicine* (Lancet Discovery Science), dengan total sampel 1,27 juta individu.
+
+#### Blok XI — Keluhan Kesehatan & Rawat Jalan
+
+- **Kepemilikan jaminan kesehatan**: BPJS PBI, BPJS Non-PBI/Mandiri, Jamkesda, Asuransi swasta, Asuransi perusahaan
+- Keluhan kesehatan dalam sebulan terakhir
+- Jenis keluhan (sakit kepala, demam, batuk, dsb.)
+- Jenis, jumlah, dan biaya rawat jalan
+- Alasan tidak berobat meski sakit
+
+#### Blok XII — Rawat Inap & Merokok
+
+- Rawat inap dalam setahun terakhir: tempat, lama, biaya, sumber pembiayaan
+- Kebiasaan merokok: jenis, frekuensi, jumlah
+
+### Kuesioner Panel (VSEN23.KP) — Modul Tematik
+
+Selain kuesioner Kor, Susenas memiliki **kuesioner Panel** untuk sub-sampel khusus:
+
+**Blok XIII–XVI — Balita (anak 0–59 bulan):**
+
+- Riwayat imunisasi lengkap (BCG, polio, DPT-HB-HIB, campak, dan lanjutan)
+- Status ASI eksklusif dan pemberian MPASI
+- Pertumbuhan berat dan tinggi badan
+- Kunjungan ke posyandu
+
+**Blok XVII–XIX — Perempuan Pernah Kawin (10–54 tahun):**
+
+- Riwayat kehamilan dan kelahiran (fertilitas)
+- Penggunaan kontrasepsi/KB
+- Pemeriksaan kehamilan dan persalinan
+- Kematian ibu
+
+**Blok XX — Akses Terhadap Makanan (ketahanan pangan):**
+
+- Kekhawatiran tidak memiliki cukup makanan (HFIAS)
+- Pengurangan kualitas dan kuantitas makan
+- Dampak pada anak-anak dalam rumah tangga
+
+**Blok XXI — Pengeluaran Rumah Tangga:**
+
+- Pengeluaran makanan (58 jenis komoditi) dalam seminggu terakhir
+- Pengeluaran non-makanan (pakaian, pendidikan, kesehatan, transportasi, dll.) dalam sebulan terakhir
+- Penerimaan bantuan sosial (PKH, BLT, BPNT, dll.)
+
+**Blok XXII — Perumahan:**
+
+- Status kepemilikan dan luas bangunan
+- Jenis atap, dinding, dan lantai
+- Sumber air minum dan bahan bakar memasak
+- Fasilitas buang air besar dan tempat pembuangan akhir
+- Penerangan (jenis sumber listrik)
+
+### Variabel Pengenal Susenas (Identifikasi & Merging)
+
+Untuk menggabungkan dataset individu, rumah tangga, atau melakukan merge dengan PODES, gunakan variabel identifikasi berikut:
+
+```
+IDENTIFIKASI WILAYAH:
+B1R1  → Kode Provinsi (2 digit)
+B1R2  → Kode Kabupaten/Kota (4 digit: 2+2)
+B1R3  → Kode Kecamatan (7 digit)
+B1R4  → Kode Desa/Kelurahan (10 digit)
+B1R5  → Klasifikasi (1=Perkotaan, 2=Perdesaan)
+B1R6  → Nomor Blok Sensus
+B1R7  → Nomor Kode Sampel (NKS) — identitas unik blok sensus
+
+IDENTIFIKASI RUMAH TANGGA:
+B1R8  → Nomor Urut Bangunan Tempat Tinggal
+B1R9  → Nomor Urut Sampel Rumah Tangga
+
+IDENTIFIKASI INDIVIDU:
+B2R1  → Nomor Urut Anggota Rumah Tangga (ART)
+
+BOBOT SAMPEL:
+WERT  → Sampling weight (harus selalu digunakan!)
+```
+
+---
+
+## PODES: Pendataan Potensi Desa
+
+### Sejarah Singkat & Konteks
+
+PODES pertama kali dilaksanakan secara sporadis sejak **1980** dan menjadi kegiatan rutin tiga tahunan sejak **1990**. PODES dilaksanakan sebagai kegiatan persiapan (*listing*) sebelum pelaksanaan sensus besar BPS (Sensus Penduduk, Sensus Pertanian, atau Sensus Ekonomi). Edisi-edisi penting meliputi PODES 2003, 2006, 2008, 2011, 2014, 2018, dan **2021**.
+
+Perbedaan fundamental PODES dengan Susenas:
+
+| Aspek | PODES | Susenas |
+|-------|-------|---------|
+| **Jenis** | **Sensus** (semua desa) | Sampel |
+| **Unit analisis** | Desa/Kelurahan | Rumah tangga / Individu |
+| **Frekuensi** | 3 tahunan | Tahunan |
+| **Narasumber** | Kepala Desa + perangkat | Responden RT |
+| **Jumlah unit** | ~83.800 desa (2021) | ~320.000 RT (Maret) |
+| **Level analisis** | Desa, kecamatan, kab/kota | Individu, RT, kab/kota |
+
+### Struktur Kuesioner PODES 2021
+
+PODES 2021 terdiri dari **10 Bab** utama:
+
+#### Bab I–III: Identitas, Petugas & Geografi Desa
+
+- **Identitas:** Kode provinsi, kab/kota, kecamatan, desa/kelurahan
+- **Narasumber:** Nama kepala desa/lurah dan perangkat desa yang diwawancarai
+- **Geografi:**
+  - Koordinat GPS (lintang dan bujur) lokasi kantor desa
+  - Ketinggian dari permukaan laut (dpal)
+  - Topografi dominan wilayah: puncak/tebing, lereng, dataran, lembah
+  - Berbatasan langsung dengan laut (ada/tidak)
+  - Pemanfaatan laut: perikanan tangkap, budidaya, tambak garam, wisata bahari
+  - Keberadaan mangrove dan kondisinya
+
+#### Bab IV: Kependudukan & Ketenagakerjaan
+
+- Jumlah penduduk laki-laki dan perempuan per 1 Januari 2021
+- Jumlah keluarga total dan keluarga pertanian
+- **Sumber penghasilan utama** sebagian besar penduduk (pertanian, industri, perdagangan, jasa pemerintah, dll. — 17 kategori)
+- Jenis komoditi/sub-sektor utama
+- Keberadaan PMI/TKI yang bekerja di luar negeri (jumlah laki-laki dan perempuan)
+- Agen pengerahan PMI/TKI di desa
+- Keberadaan Warga Negara Asing (WNA)
+
+#### Bab V: Perumahan & Lingkungan
+
+- **Listrik:** Jumlah keluarga pengguna PLN, non-PLN, dan non-listrik; lampu tenaga surya
+- **Air minum:** Sumber air utama (air kemasan, isi ulang, PAM, sumur bor, sumur gali, mata air, sungai, hujan, dll.)
+- **Sampah:** Cara pengelolaan (TPS, lubang/bakar, sungai, drainase); bank sampah
+- Keberadaan permukiman kumuh (lokasi, jumlah bangunan, jumlah keluarga)
+- Jalur SUTET/SUTT melalui wilayah desa
+
+#### Bab VI: Bencana Alam
+
+- **Jenis bencana** yang terjadi dalam setahun terakhir: banjir, banjir bandang, longsor, gempa bumi, tsunami, gelombang pasang, angin puyuh, gunung meletus, kekeringan, kebakaran hutan/lahan
+- Luas areal pertanian terdampak/rusak
+- Jumlah penduduk terdampak
+- **Fasilitas mitigasi:** sistem peringatan dini bencana, peringatan dini tsunami, perlengkapan keselamatan
+
+#### Bab VII: Pendidikan & Kesehatan
+
+**Pendidikan:**
+
+- Keberadaan sekolah (SD, SMP, SMA, SMK, Madrasah) di desa — milik desa vs bukan
+- Fasilitas keterampilan (bahasa asing, komputer, kejuruan)
+- Keberadaan perpustakaan desa
+
+**Kesehatan:**
+
+- Fasilitas kesehatan: rumah sakit, puskesmas, pustu, poliklinik, rumah bersalin, poskesdes, posyandu
+- Tenaga kesehatan yang menetap: dokter umum, dokter spesialis gigi, bidan, tenaga lainnya
+- Keberadaan Bidan di Desa (BDD)
+- Keberadaan dukun bayi
+
+#### Bab VIII: Sosial & Budaya
+
+- Tempat ibadah (masjid, mushola, gereja Protestan, gereja Katolik, pura, wihara, kelenteng, balai basarah)
+- Jumlah penyandang disabilitas: tuna netra, tuna rungu, tuna wicara, tuna rungu-wicara
+- Fasilitas olahraga dan kelompok kegiatan olahraga
+- Konflik sosial yang terjadi
+
+#### Bab IX: Ekonomi & Keuangan Desa
+
+- Pasar: keberadaan, jenis (desa, umum, swalayan), frekuensi
+- Lembaga keuangan: bank umum/BPR, koperasi, BUMDes, pegadaian
+- Komoditas pertanian unggulan
+- Fasilitas wisata/penginapan
+
+#### Bab X: Teknologi & Komunikasi
+
+- Pengguna telepon kabel (berlangganan)
+- Tingkat penggunaan HP warga: sebagian besar/kecil/tidak ada
+- Fasilitas IT kantor desa: komputer/laptop, akses internet
+- Kondisi: digunakan/jarang/tidak digunakan
+
+### Variabel Kunci PODES untuk Analisis Ekonometrika
+
+Tabel berikut merangkum variabel PODES yang paling sering digunakan dalam studi ekonometrika:
+
+| Kelompok | Variabel | Kode | Aplikasi |
+|----------|----------|------|----------|
+| **Bencana** | Desa terdampak banjir | R601 | Shock ekonomi, kerentanan |
+| **Bencana** | Desa terdampak longsor | R601 | Proxy risiko alam |
+| **Infrastruktur** | Listrik PLN (% keluarga) | R501a | Akses infrastruktur |
+| **Infrastruktur** | Jenis sumber air minum | R502 | WASH (air-sanitasi) |
+| **Kesehatan** | Ada puskesmas di desa | R705 | Akses layanan primer |
+| **Kesehatan** | Ada bidan desa | R707 | Kesehatan ibu-anak |
+| **Pendidikan** | Ada SD di desa | R701 | Akses pendidikan dasar |
+| **Ekonomi** | Sumber penghasilan utama | R403a | Tipologi ekonomi desa |
+| **Digital** | HP warga (sebagian besar) | R1002b | Digital divide |
+| **Geografi** | Topografi wilayah | R305a | Aksesibilitas desa |
+
+---
+
+## Menggabungkan Susenas dan PODES
+
+### Rationale: Mengapa Perlu Digabungkan?
+
+Susenas mengumpulkan informasi kaya tentang individu dan rumah tangga, tetapi **tidak menangkap karakteristik desa/wilayah** di mana mereka tinggal. PODES mengisi kekosongan ini dengan menyediakan **variabel kontekstual level desa** — keberadaan fasilitas, infrastruktur, kerentanan bencana — yang dapat memengaruhi outcome individu/rumah tangga.
+
+Penggabungan keduanya memungkinkan:
+
+1. **Analisis multilevel** (individu *bersarang dalam* konteks desa)
+2. **Estimasi efek kebijakan** berbasis karakteristik desa
+3. **Penelitian kerentanan** menggunakan proxy bencana PODES
+
+### Prosedur Merging
+
+**Langkah 1:** Agregasi PODES ke level yang diinginkan (desa atau kab/kota)
+
+```r
+# R — Agregasi PODES ke level kabupaten/kota
+library(dplyr)
+
+podes_kab <- podes_desa |>
+  group_by(kode_prov, kode_kab) |>
+  summarise(
+    n_total_desa       = n(),
+    n_desa_banjir      = sum(banjir == 1, na.rm = TRUE),
+    n_desa_puskesmas   = sum(ada_puskesmas == 1, na.rm = TRUE),
+    pct_desa_listrik   = mean(pct_listrik_pln, na.rm = TRUE),
+    n_desa_bidan       = sum(ada_bidan_desa == 1, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  mutate(
+    pct_desa_banjir    = n_desa_banjir / n_total_desa,
+    pct_desa_puskesmas = n_desa_puskesmas / n_total_desa
+  )
+```
+
+**Langkah 2:** Merge dengan Susenas menggunakan kode wilayah
+
+```r
+# Susenas — merge dengan PODES level kab/kota
+susenas_merged <- susenas_rt |>
+  left_join(
+    podes_kab,
+    by = c("B1R1" = "kode_prov", "B1R2" = "kode_kab")
+  )
+```
+
+**Langkah 3 (Stata):**
+
+```stata
+* Stata — merge Susenas dengan PODES level kab/kota
+use "susenas_2022_rt.dta", clear
+merge m:1 kode_prov kode_kab using "podes_kab_2021.dta"
+drop if _merge == 2  // hanya pertahankan yang match
+```
+
+### Catatan Penting
+
+::: {.callout-warning}
+**Kompatibilitas tahun:** Susenas dan PODES tidak selalu satu tahun. Gunakan PODES tahun **terdekat sebelumnya**. Contoh: Susenas 2022 + PODES 2021 adalah kombinasi yang valid dan umum digunakan (lihat Fernandez et al., 2025).
+:::
+
+::: {.callout-note}
+**One-to-many:** Satu record PODES (satu desa) akan ter-merge ke **banyak** rumah tangga Susenas yang tinggal di area kab/kota tersebut. Ini adalah merge tipe `m:1` (many-to-one). Standard errors harus di-cluster di level kab/kota atau desa.
+:::
+
+---
+
+## Contoh Penelitian Terindeks Scopus
+
+Bagian ini menyajikan empat contoh paper yang diterbitkan di jurnal terindeks Scopus menggunakan Susenas dan/atau PODES sebagai sumber data utama. Paper-paper ini dapat dijadikan **rujukan metodologis** dan **inspirasi topik riset**.
+
+### Paper 1: Kemiskinan Anak & Informalitas (Susenas + PODES)
+
+**Fernandez, M., dkk. (2025).** *Informality and multidimensional child poverty: evidence from urban and rural Indonesia.* **Development Studies Research** (Taylor & Francis), DOI: 10.1080/21665095.2025.2533852.
+
+**Ringkasan:**
+
+Studi ini menginvestigasi hubungan antara informalitas pekerjaan orang tua dengan kemiskinan multidimensi anak di Indonesia, dengan memisahkan analisis untuk konteks perkotaan dan perdesaan. Kemiskinan anak diukur menggunakan kerangka **MODA (Multiple Overlapping Deprivation Analysis)** dengan tujuh indikator deprivasi.
+
+**Data yang digunakan:**
+
+- Susenas 2022 (individu anak usia 0–17 tahun)
+- PODES 2021 — **digunakan sebagai proxy kerentanan bencana alam** di level kab/kota (banjir, banjir bandang, longsor, kekeringan)
+
+**Metodologi:** Binary logit dan multinomial logit regression, dengan fixed effects kab/kota dan cluster standard errors.
+
+**Temuan kunci:** Informalitas pekerjaan secara konsisten meningkatkan risiko kemiskinan anak multidimensi, dengan efek lebih kuat di perdesaan. Variabel bencana PODES signifikan sebagai faktor kontekstual.
+
+**Relevansi untuk peneliti:** Contoh sempurna penggunaan **cross-level merge** Susenas + PODES, serta aplikasi metodologi MODA yang semakin populer dalam studi kemiskinan anak.
+
+---
+
+### Paper 2: JKN, Disabilitas & Perlindungan Keuangan (Susenas)
+
+**Zainudin, F., dkk. (2025).** *Health insurance coverage, healthcare use, and financial protection amongst people with disabilities in Indonesia: analysis of the 2021 National Socioeconomic Survey.* **eClinicalMedicine** (The Lancet Discovery Science, **Q1 Scopus**), PMCID: PMC12274863.
+
+**Ringkasan:**
+
+Studi ini mengevaluasi cakupan Jaminan Kesehatan Nasional (JKN) dan hubungannya dengan utilisasi layanan kesehatan serta perlindungan keuangan bagi penyandang disabilitas di Indonesia. Ini adalah studi pertama yang secara khusus menganalisis topik ini di Indonesia menggunakan data mikro.
+
+**Data yang digunakan:**
+
+- Susenas Maret 2021 (n = **1.277.497 individu**)
+- Disabilitas diukur menggunakan **Washington Group Short Set (WG-SS)** dari Blok X Susenas
+
+**Metodologi:** Multivariate logistic regression dengan clustering di level rumah tangga.
+
+**Temuan kunci:** Sekitar 30% penyandang disabilitas tidak memiliki asuransi kesehatan; cakupan lebih rendah pada kelompok termiskin, penduduk perdesaan, dan pekerja mandiri.
+
+**Relevansi untuk peneliti:** Menunjukkan bagaimana **Blok X (disabilitas) dan Blok XI (JKN/jaminan kesehatan)** Susenas dapat digunakan bersama untuk analisis kesehatan. Skala sampel yang sangat besar memungkinkan analisis subkelompok yang presisi.
+
+---
+
+### Paper 3: Kerentanan Sosial & Data Set (Susenas)
+
+**Kurniawan, R., dkk. (2021).** *Revisiting social vulnerability analysis in Indonesia data.* **Data in Brief** (Elsevier, **Scopus-indexed**), DOI: 10.1016/j.dib.2021.107743.
+
+**Ringkasan:**
+
+Paper ini mempublikasikan *dataset* kerentanan sosial Indonesia yang dikonstruksi dari Susenas 2017, mencakup dimensi kemiskinan, kesehatan, pendidikan, dan perumahan di level kabupaten. Dataset ini dianalisis menggunakan **Fuzzy Geographically Weighted Clustering (FGWC)** untuk mengidentifikasi pola spasial kerentanan.
+
+**Data yang digunakan:**
+
+- Susenas 2017 (dikompilasi ke level kabupaten/kota)
+
+**Metodologi:** Kompilasi indikator, normalisasi, FGWC clustering, pemetaan spasial.
+
+**Relevansi untuk peneliti:** Contoh bagaimana Susenas digunakan untuk membangun **composite vulnerability index** yang dapat diintegrasikan dengan data PODES atau data spasial lainnya.
+
+---
+
+### Paper 4: Kemiskinan Multidimensi & Gender (Susenas)
+
+**Wahyuni, E.T., & Wongkaren, T.S. (2022).** *Gender Determinant on Multidimensional Poverty Index: Evidence from Indonesia.* **Soseco** (Universitas Negeri Malang, **Sinta 2**), DOI: 10.17977/um062v5i22022.
+
+**Ringkasan:**
+
+Studi ini mengeksplorasi kontribusi determinan gender terhadap kemiskinan multidimensi di Indonesia menggunakan metode **Alkire-Foster (AF)**. Kemiskinan diukur dari dimensi pendidikan (tahun sekolah, partisipasi sekolah), kesehatan (nutrisi, kematian anak), dan standar hidup (listrik, air, sanitasi, bahan bakar, perumahan, aset).
+
+**Data yang digunakan:**
+
+- Susenas 2018
+
+**Metodologi:** Logit estimation dengan Multidimensional Poverty Index (MPI) berbasis Alkire-Foster.
+
+**Temuan kunci:** ~10% penduduk Indonesia termasuk "rentan miskin" dan 3% "sangat miskin". Deprivasi paling dominan adalah tahun sekolah, kepemilikan JKN, dan kepemilikan aset.
+
+**Relevansi untuk peneliti:** Panduan praktis untuk mengimplementasikan **metodologi Alkire-Foster** menggunakan data Susenas.
+
+---
+
+### Rangkuman: Topik Riset Potensial dengan Susenas & PODES
+
+| Topik Riset | Data | Blok Kunci | Metode Umum |
+|-------------|------|------------|-------------|
+| Kemiskinan & konsumsi | Susenas | Blok XXI, XXII | OLS, quantile reg. |
+| Kemiskinan multidimensi | Susenas | Blok VI, VII, XI, XXI, XXII | Alkire-Foster, logit |
+| Dampak JKN | Susenas | Blok XI, XII | Logit, IV, DiD |
+| Disabilitas & kesehatan | Susenas | Blok X, XI | Logit, probit |
+| Pendidikan & pasar kerja | Susenas | Blok VI, VII | OLS, Mincer equation |
+| Ketahanan pangan | Susenas Panel | Blok XX | Logit, tobit |
+| Infrastruktur & kemiskinan | Susenas + PODES | Blok PODES V, VII | OLS, IV, 2SLS |
+| Bencana alam & welfare | Susenas + PODES | PODES Bab VI | DiD, logit |
+| Smart village & digital divide | PODES | Bab X | Logit, factor analysis |
+| Kemiskinan anak | Susenas (+PODES) | Blok IV, VI, XI + PODES | Logit, MODA |
+
+---
+
+## Tips Praktis untuk Peneliti
+
+### Akses Data
+
+1. Kunjungi portal resmi BPS: [**microdata.bps.go.id**](https://microdata.bps.go.id)
+2. Daftar akun (gratis untuk akademisi) dan ajukan permintaan data
+3. Data tersedia dalam format `.dta` (Stata) dan `.sav` (SPSS)
+4. Untuk membaca di R: `haven::read_dta("file.dta")`
+5. Untuk membaca di Python: `pyreadstat.read_dta("file.dta")`
+
+### Checklist Sebelum Analisis
+
+- [ ] Pahami **unit analisis** yang tepat (individu vs rumah tangga)
+- [ ] Gunakan **sampling weight** (`WERT` atau nama weight di versi terbaru) **selalu**
+- [ ] Periksa **periode referensi** setiap pertanyaan (seminggu/sebulan/setahun terakhir)
+- [ ] Baca **codebook** resmi sebelum menginterpretasikan nilai variabel
+- [ ] Cek **perubahan kuesioner** antara tahun yang berbeda jika menggunakan pooled data
+- [ ] Gunakan `haven::as_factor()` untuk variabel kategorikal berlabel
+- [ ] Verifikasi kode wilayah jika melakukan merge lintas dataset
+
+### Pelaporan dalam Publikasi
+
+Ketika menggunakan Susenas atau PODES dalam publikasi ilmiah, pastikan menyebutkan:
+
+- Nama survei lengkap dan singkatan resmi (Susenas/PODES)
+- Tahun/gelombang survei (misal: Susenas Maret 2022)
+- Lembaga penyelenggara (BPS — Statistics Indonesia)
+- Ukuran sampel yang digunakan dalam analisis
+- Penggunaan sampling weights dan jenis standard errors (robust, cluster)
+
+Contoh kalimat metodologi:
+
+> *"Data diambil dari Survei Sosial Ekonomi Nasional (Susenas) Maret 2022 yang diselenggarakan oleh BPS — Statistics Indonesia. Sampel yang digunakan mencakup 287.450 rumah tangga setelah penghapusan observasi yang memiliki data tidak lengkap. Seluruh estimasi menggunakan sampling weights yang disediakan BPS dan standard errors yang di-cluster di level kabupaten/kota."*
+
+---
+
+## Referensi
+
+1. BPS — Statistics Indonesia. (2023). *Kuesioner Survei Sosial Ekonomi Nasional 2023 (VSEN23.K & VSEN23.KP)*. Jakarta: BPS.
+
+2. BPS — Statistics Indonesia. (2021). *Kuesioner Pendataan Potensi Desa 2021*. Jakarta: BPS.
+
+3. Fernandez, M., et al. (2025). Informality and multidimensional child poverty: evidence from urban and rural Indonesia. *Development Studies Research*, 12(1). DOI: 10.1080/21665095.2025.2533852
+
+4. Zainudin, F., et al. (2025). Health insurance coverage, healthcare use, and financial protection amongst people with disabilities in Indonesia: analysis of the 2021 National Socioeconomic Survey. *eClinicalMedicine* (The Lancet Discovery Science). PMCID: PMC12274863.
+
+5. Kurniawan, R., et al. (2021). Revisiting social vulnerability analysis in Indonesia data. *Data in Brief*, 39, 107743. DOI: 10.1016/j.dib.2021.107743
+
+6. Wahyuni, E.T., & Wongkaren, T.S. (2022). Gender Determinant on Multidimensional Poverty Index: Evidence from Indonesia. *Soseco — Jurnal Ilmu Sosial dan Ilmu Ekonomi*, 5(2). DOI: 10.17977/um062v5i22022
+
+7. Duke University Libraries. (n.d.). *Village Potential Statistics (PODES) Dataset — Indonesia*. Diakses dari: https://library.duke.edu/data/sources/podes
+
+---
+
+```{=html}
+<div style="background:#eaf2fb; border-left:5px solid #2980b9; padding:1em 1.5em; border-radius:0 8px 8px 0; margin-top:2em;">
+<h4 style="margin:0 0 0.5em 0; color:#1a5276;">📌 Modul Selanjutnya</h4>
+<ul style="margin:0;">
+<li><strong>Modul 1:</strong> Cek Data & Statistik Deskriptif — Susenas Balita Sakit <em>(sudah tersedia)</em></li>
+<li><strong>Modul 2:</strong> Eksplorasi Data PODES — Infrastruktur & Bencana</li>
+<li><strong>Modul 3:</strong> Regresi Linear & Logit dengan Data Susenas</li>
+<li><strong>Modul 4:</strong> Multilevel Analysis — Menggabungkan Susenas & PODES</li>
+<li><strong>Modul 5:</strong> Metode Kausal — DiD & IV dengan Data BPS</li>
+</ul>
+</div>
+```

@@ -1,0 +1,756 @@
+---
+title: "Anatomi Data Susenas & PODES"
+subtitle: "Panduan untuk Peneliti Ekonometrika"
+author: "Research Training in Econometrics"
+date: "2026-07-07"
+format:
+  revealjs:
+    theme: [default, custom.scss]
+    slide-number: true
+    progress: true
+    chalkboard: false
+    footer: "Research Training in Econometrics | Susenas & PODES"
+    transition: slide
+    highlight-style: github
+    code-fold: false
+    scrollable: true
+    width: 1280
+    height: 720
+    margin: 0.05
+    embed-resources: true
+execute:
+  echo: false
+  warning: false
+---
+
+## Outline {.center}
+
+::: {.incremental}
+1. **Mengapa Data Survei Makro BPS?**
+2. **Susenas** — Anatomi & Struktur
+3. **PODES** — Anatomi & Struktur
+4. **Menggabungkan Susenas & PODES**
+5. **Contoh Paper Terindeks Scopus**
+6. **Tips untuk Peneliti**
+:::
+
+---
+
+# Bagian 1 {.section-title background-color="#1e3a5f"}
+
+## Mengapa Data BPS?
+
+---
+
+## Posisi Data BPS dalam Ekosistem Riset Indonesia
+
+```{=html}
+<div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:1.2em; margin-top:0.5em;">
+  <div style="background:#eaf2fb; border-left:5px solid #2980b9; padding:1em; border-radius:6px;">
+    <h4 style="color:#1a5276; margin:0 0 0.4em 0;">🏠 Rumah Tangga</h4>
+    <p style="margin:0; font-size:0.85em;"><strong>Susenas</strong> — sosial ekonomi<br>
+    <strong>Sakernas</strong> — ketenagakerjaan<br>
+    <strong>SDKI</strong> — demografi kesehatan</p>
+  </div>
+  <div style="background:#eafaf1; border-left:5px solid #27ae60; padding:1em; border-radius:6px;">
+    <h4 style="color:#1e8449; margin:0 0 0.4em 0;">🏘️ Desa/Kelurahan</h4>
+    <p style="margin:0; font-size:0.85em;"><strong>PODES</strong> — potensi desa<br>
+    <strong>IDM</strong> — indeks desa membangun<br>
+    <strong>ProDes</strong> — profil desa</p>
+  </div>
+  <div style="background:#fef9e7; border-left:5px solid #f39c12; padding:1em; border-radius:6px;">
+    <h4 style="color:#b7770d; margin:0 0 0.4em 0;">🏢 Perusahaan/Wilayah</h4>
+    <p style="margin:0; font-size:0.85em;"><strong>SE</strong> — Sensus Ekonomi<br>
+    <strong>SP</strong> — Sensus Penduduk<br>
+    <strong>PDRB</strong> — data agregat</p>
+  </div>
+</div>
+```
+
+::: {.callout-tip}
+Susenas dan PODES adalah **dua pilar utama** riset kemiskinan, kesehatan, pendidikan, dan pembangunan desa di Indonesia. Keduanya dapat digabungkan (*merge*) pada level kabupaten/kota atau desa.
+:::
+
+---
+
+## Keunggulan Data BPS untuk Ekonometrika
+
+| Fitur | Keterangan |
+|-------|------------|
+| **Representativitas** | Sampel nasional, tersedia hingga level provinsi dan kab/kota |
+| **Periodesitas** | Susenas tahunan; PODES tiga tahunan (sensus) |
+| **Kedalaman variabel** | Ribuan variabel — demografi, pendapatan, kesehatan, pendidikan |
+| **Panel semu** | Pooled cross-section memungkinkan analisis tren |
+| **Aksesibilitas** | Tersedia di BPS melalui *Microdata BPS* |
+| **Kompatibilitas** | Format `.dta` (Stata), mudah dibaca R/Python |
+
+---
+
+# Bagian 2 {.section-title background-color="#1a5276"}
+
+## Anatomi Susenas
+
+---
+
+## Apa itu Susenas?
+
+**Survei Sosial Ekonomi Nasional (Susenas)** adalah survei rumah tangga yang diselenggarakan BPS secara rutin setiap tahun.
+
+::: {.columns}
+::: {.column width="55%"}
+**Karakteristik Utama:**
+
+- Diselenggarakan sejak **1963**
+- Dua gelombang per tahun: **Maret** (utama) & **September**
+- Sampel: sekitar **320.000 rumah tangga** (Maret)
+- Unit analisis: **individu** dan **rumah tangga**
+- Tersedia di semua **34 provinsi**
+- Level estimasi: **nasional, provinsi, kabupaten/kota**
+:::
+::: {.column width="45%"}
+```{=html}
+<div style="background:#eaf2fb; border:1px solid #2980b9; border-radius:8px; padding:1em;">
+  <h4 style="color:#1a5276; margin:0 0 0.5em 0; text-align:center;">Tujuan Utama Susenas</h4>
+  <ul style="margin:0; font-size:0.88em; line-height:1.8;">
+    <li>Menghitung angka <strong>kemiskinan</strong></li>
+    <li>Menghitung <strong>Gini rasio</strong></li>
+    <li>Mengukur indikator <strong>SDGs</strong></li>
+    <li>Data dasar <strong>RPJMN</strong></li>
+    <li>Input program <strong>bantuan sosial</strong></li>
+  </ul>
+</div>
+```
+:::
+:::
+
+---
+
+## Struktur Kuesioner Susenas 2023
+
+Susenas terdiri dari **dua komponen** kuesioner:
+
+::: {.columns}
+::: {.column width="48%"}
+### 📋 Kuesioner Kor (VSEN-K)
+*Ditanya kepada semua rumah tangga*
+
+| Blok | Topik |
+|------|-------|
+| I–III | Identitas & ringkasan |
+| IV | Demografi (nama, umur, status) |
+| V | Dokumen kependudukan (NIK, akta) |
+| VI | Migrasi & pendidikan |
+| VII | Tabungan & ketenagakerjaan |
+| VIII | TIK (HP, internet) |
+| IX | Perjalanan & korban kejahatan |
+| X | Gangguan fungsional (disabilitas) |
+| XI | Keluhan kesehatan & rawat jalan |
+| XII | Rawat inap & merokok |
+:::
+::: {.column width="48%"}
+### 📋 Kuesioner Panel (VSEN-KP)
+*Modul tambahan tematik*
+
+| Blok | Topik |
+|------|-------|
+| XIII–XVI | **Balita** — gizi, imunisasi, ASI |
+| XVII–XIX | **Perempuan pernah kawin** — fertilitas, KB |
+| XX | **Akses pangan** — ketahanan pangan |
+| XXI | **Pengeluaran** — konsumsi RT |
+| XXII | **Perumahan** — sanitasi, air, listrik |
+| XXIII | Catatan pencacah |
+
+::: {.callout-note}
+**Kuesioner KP** hanya diberikan kepada sub-sampel tertentu, tergantung modul survei yang dirancang BPS.
+:::
+:::
+:::
+
+---
+
+## Anatomi Blok-Blok Kunci Susenas
+
+```{=html}
+<div style="display:grid; grid-template-columns: 1fr 1fr; gap:1em; font-size:0.85em;">
+
+  <div style="border:1px solid #aed6f1; border-radius:8px; padding:0.9em;">
+    <h4 style="color:#1a5276; margin:0 0 0.5em 0;">📚 Blok VI — Pendidikan</h4>
+    <ul style="margin:0; line-height:1.7;">
+      <li>Tempat lahir & migrasi (5 tahun lalu)</li>
+      <li>Partisipasi prasekolah (TK, PAUD, RA)</li>
+      <li>Kemampuan baca-tulis (latin, arab, lainnya)</li>
+      <li>Status sekolah & jenjang tertinggi</li>
+      <li>Ijazah/STTB yang dimiliki</li>
+    </ul>
+  </div>
+
+  <div style="border:1px solid #a9dfbf; border-radius:8px; padding:0.9em;">
+    <h4 style="color:#1e8449; margin:0 0 0.5em 0;">💼 Blok VII — Ketenagakerjaan</h4>
+    <ul style="margin:0; line-height:1.7;">
+      <li>Kepemilikan rekening tabungan</li>
+      <li>Inklusi keuangan</li>
+      <li>Kegiatan seminggu terakhir (bekerja/sekolah/IRT)</li>
+      <li>Jenis pekerjaan & lapangan usaha</li>
+      <li>Status pekerjaan (majikan, buruh, dsb.)</li>
+    </ul>
+  </div>
+
+  <div style="border:1px solid #f9e79f; border-radius:8px; padding:0.9em;">
+    <h4 style="color:#b7770d; margin:0 0 0.5em 0;">🏥 Blok XI — Kesehatan & Jaminan</h4>
+    <ul style="margin:0; line-height:1.7;">
+      <li>Kepemilikan JKN/BPJS (PBI & Non-PBI)</li>
+      <li>Asuransi swasta & Jamkesda</li>
+      <li>Keluhan kesehatan sebulan terakhir</li>
+      <li>Rawat jalan: tempat & biaya</li>
+      <li>Lama sakit & penyebab tidak berobat</li>
+    </ul>
+  </div>
+
+  <div style="border:1px solid #f5cba7; border-radius:8px; padding:0.9em;">
+    <h4 style="color:#a04000; margin:0 0 0.5em 0;">🏠 Blok XXI/XXII — Konsumsi & Perumahan</h4>
+    <ul style="margin:0; line-height:1.7;">
+      <li>Pengeluaran makanan & non-makanan</li>
+      <li>Bantuan sosial diterima</li>
+      <li>Jenis atap, dinding, lantai rumah</li>
+      <li>Sumber air minum & jamban</li>
+      <li>Bahan bakar memasak & listrik</li>
+    </ul>
+  </div>
+
+</div>
+```
+
+---
+
+## Skema Sampling Susenas
+
+```{=html}
+<div style="text-align:center; margin-top:0.5em;">
+<div style="display:inline-block; text-align:left; width:90%;">
+  <div style="display:flex; align-items:center; gap:0.5em; margin-bottom:0.5em;">
+    <div style="background:#1a5276; color:white; padding:0.6em 1.2em; border-radius:6px; font-weight:bold; min-width:200px; text-align:center;">Populasi: Semua RT Indonesia</div>
+    <div style="font-size:1.5em; color:#888;">▼</div>
+    <div style="font-size:0.85em; color:#555;">~84 juta rumah tangga</div>
+  </div>
+  <div style="display:flex; align-items:center; gap:0.5em; margin-bottom:0.5em; padding-left:1em;">
+    <div style="background:#2980b9; color:white; padding:0.6em 1.2em; border-radius:6px; font-weight:bold; min-width:200px; text-align:center;">Stratifikasi: Perkotaan/Perdesaan</div>
+    <div style="font-size:1.5em; color:#888;">▼</div>
+    <div style="font-size:0.85em; color:#555;">Tahap 1: pilih Blok Sensus (PPS)</div>
+  </div>
+  <div style="display:flex; align-items:center; gap:0.5em; margin-bottom:0.5em; padding-left:2em;">
+    <div style="background:#2471a3; color:white; padding:0.6em 1.2em; border-radius:6px; font-weight:bold; min-width:200px; text-align:center;">Pilih Blok Sensus (BS)</div>
+    <div style="font-size:1.5em; color:#888;">▼</div>
+    <div style="font-size:0.85em; color:#555;">Tahap 2: pilih RT dalam BS (sistematik)</div>
+  </div>
+  <div style="display:flex; align-items:center; gap:0.5em; padding-left:3em;">
+    <div style="background:#1f618d; color:white; padding:0.6em 1.2em; border-radius:6px; font-weight:bold; min-width:200px; text-align:center;">Sampel: ~10 RT per BS</div>
+    <div style="font-size:1.5em; color:#888;">▼</div>
+    <div style="font-size:0.85em; color:#555;"><strong>±320.000 RT</strong> (Maret) | <strong>±75.000 RT</strong> (September)</div>
+  </div>
+</div>
+</div>
+```
+
+::: {.callout-warning}
+Karena Susenas adalah **sampel bertingkat dengan pembobotan**, semua analisis HARUS menggunakan **sampling weights** (`weight`) agar hasilnya representatif.
+:::
+
+---
+
+## Variabel Pengenal & Merging Susenas
+
+Untuk menggabungkan dataset, gunakan variabel identifikasi berikut:
+
+| Kode Variabel | Keterangan | Level |
+|---------------|------------|-------|
+| `B1R1` | Kode provinsi | Provinsi |
+| `B1R2` | Kode kabupaten/kota | Kab/Kota |
+| `B1R3` | Kode kecamatan | Kecamatan |
+| `B1R4` | Kode desa/kelurahan | Desa |
+| `B1R5` | Klasifikasi perkotaan/perdesaan | Desa |
+| `B1R7` | Nomor kode sampel (NKS) | Blok Sensus |
+| `B1R8` / `B1R9` | No. bangunan & No. urut RT | Rumah Tangga |
+| `B2R1` | No. urut anggota rumah tangga | Individu |
+
+::: {.callout-tip}
+Dataset Susenas terdiri dari **dua file utama**: `individu` dan `rumah tangga`. Gunakan NKS + No. urut RT untuk menghubungkan keduanya.
+:::
+
+---
+
+# Bagian 3 {.section-title background-color="#145a32"}
+
+## Anatomi PODES
+
+---
+
+## Apa itu PODES?
+
+**Pendataan Potensi Desa (PODES)** adalah pendataan lengkap seluruh desa/kelurahan di Indonesia yang dilakukan BPS sebagai persiapan sensus besar (SP, SE, ST).
+
+::: {.columns}
+::: {.column width="55%"}
+**Karakteristik Utama:**
+
+- Diselenggarakan sejak **1980** (sporadis), rutin sejak 1990
+- Dilaksanakan setiap **3 tahun** sekali
+- Cakupan: **seluruh** desa/kelurahan (**sensus**, bukan sampel)
+- Edisi terbaru: **PODES 2021** (~83.800 desa/kelurahan)
+- Unit analisis: **desa/kelurahan**
+- Narasumber: kepala desa/lurah dan perangkat desa
+:::
+::: {.column width="45%"}
+```{=html}
+<div style="background:#eafaf1; border:1px solid #27ae60; border-radius:8px; padding:1em;">
+  <h4 style="color:#145a32; margin:0 0 0.5em 0; text-align:center;">Tujuan Utama PODES</h4>
+  <ul style="margin:0; font-size:0.88em; line-height:1.8;">
+    <li>Kerangka sampel sensus</li>
+    <li>Pemetaan <strong>potensi desa</strong></li>
+    <li>Dasar penentuan <strong>IDM</strong></li>
+    <li>Input dana desa & program BLT</li>
+    <li>Data infrastruktur & fasilitas publik</li>
+  </ul>
+</div>
+```
+:::
+:::
+
+---
+
+## Struktur Kuesioner PODES 2021
+
+PODES 2021 mencakup **10 Bab** dengan ratusan variabel:
+
+```{=html}
+<div style="display:grid; grid-template-columns: 1fr 1fr; gap:0.8em; font-size:0.82em;">
+
+  <div style="border-left:4px solid #27ae60; padding:0.5em 0.8em; background:#f9fdf9;">
+    <strong>Bab I–III:</strong> Identitas, Petugas & Geografi
+    <br><span style="color:#555;">Koordinat, topografi (datar/lereng/puncak), wilayah laut, mangrove, ketinggian dpal</span>
+  </div>
+
+  <div style="border-left:4px solid #27ae60; padding:0.5em 0.8em; background:#f9fdf9;">
+    <strong>Bab IV:</strong> Kependudukan & Ketenagakerjaan
+    <br><span style="color:#555;">Jumlah penduduk & KK, sumber penghasilan utama, PMI/TKI, WNA</span>
+  </div>
+
+  <div style="border-left:4px solid #2ecc71; padding:0.5em 0.8em; background:#f9fdf9;">
+    <strong>Bab V:</strong> Perumahan & Lingkungan
+    <br><span style="color:#555;">Listrik (PLN/non-PLN), sumber air minum, tempat buang sampah, permukiman kumuh, SUTET</span>
+  </div>
+
+  <div style="border-left:4px solid #2ecc71; padding:0.5em 0.8em; background:#f9fdf9;">
+    <strong>Bab VI:</strong> Bencana Alam
+    <br><span style="color:#555;">Jenis bencana (banjir, longsor, gempa, tsunami, kekeringan), luas dampak, antisipasi/mitigasi</span>
+  </div>
+
+  <div style="border-left:4px solid #1abc9c; padding:0.5em 0.8em; background:#f9fdf9;">
+    <strong>Bab VII:</strong> Pendidikan & Kesehatan
+    <br><span style="color:#555;">Sekolah (SD–SMA), fasilitas kesehatan (puskesmas, RS, bidan), tenaga kesehatan</span>
+  </div>
+
+  <div style="border-left:4px solid #1abc9c; padding:0.5em 0.8em; background:#f9fdf9;">
+    <strong>Bab VIII:</strong> Sosial & Budaya
+    <br><span style="color:#555;">Tempat ibadah, penyandang disabilitas, fasilitas olahraga, konflik sosial</span>
+  </div>
+
+  <div style="border-left:4px solid #16a085; padding:0.5em 0.8em; background:#f9fdf9;">
+    <strong>Bab IX:</strong> Ekonomi & Keuangan
+    <br><span style="color:#555;">Pasar, lembaga keuangan (bank, koperasi, BUMDes), pertanian, pariwisata</span>
+  </div>
+
+  <div style="border-left:4px solid #16a085; padding:0.5em 0.8em; background:#f9fdf9;">
+    <strong>Bab X:</strong> Teknologi & Komunikasi
+    <br><span style="color:#555;">HP/internet warga, komputer kantor desa, koneksi internet kantor desa</span>
+  </div>
+
+</div>
+```
+
+---
+
+## Variabel Unggulan PODES untuk Riset
+
+```{=html}
+<table style="font-size:0.82em; width:100%; border-collapse:collapse;">
+<thead>
+  <tr style="background:#145a32; color:white;">
+    <th style="padding:0.5em; text-align:left;">Dimensi</th>
+    <th style="padding:0.5em; text-align:left;">Contoh Variabel</th>
+    <th style="padding:0.5em; text-align:left;">Aplikasi Riset</th>
+  </tr>
+</thead>
+<tbody>
+  <tr style="background:#eafaf1;">
+    <td style="padding:0.4em;"><strong>Infrastruktur</strong></td>
+    <td style="padding:0.4em;">Listrik PLN, jalan beraspal, jembatan</td>
+    <td style="padding:0.4em;">Pengaruh infrastruktur terhadap kemiskinan</td>
+  </tr>
+  <tr>
+    <td style="padding:0.4em;"><strong>Bencana Alam</strong></td>
+    <td style="padding:0.4em;">Banjir, longsor, kekeringan, gempa</td>
+    <td style="padding:0.4em;">Vulnerability & shocks terhadap kemiskinan anak</td>
+  </tr>
+  <tr style="background:#eafaf1;">
+    <td style="padding:0.4em;"><strong>Fasilitas Kesehatan</strong></td>
+    <td style="padding:0.4em;">Puskesmas, RS, bidan desa</td>
+    <td style="padding:0.4em;">Akses layanan kesehatan & utilisasi</td>
+  </tr>
+  <tr>
+    <td style="padding:0.4em;"><strong>Pendidikan</strong></td>
+    <td style="padding:0.4em;">Keberadaan SD, SMP, SMA di desa</td>
+    <td style="padding:0.4em;">Jarak ke sekolah & angka partisipasi sekolah</td>
+  </tr>
+  <tr style="background:#eafaf1;">
+    <td style="padding:0.4em;"><strong>Ekonomi Desa</strong></td>
+    <td style="padding:0.4em;">Pasar, BUMDes, lembaga keuangan</td>
+    <td style="padding:0.4em;">Inklusi keuangan pedesaan</td>
+  </tr>
+  <tr>
+    <td style="padding:0.4em;"><strong>Digital</strong></td>
+    <td style="padding:0.4em;">HP warga, internet kantor desa</td>
+    <td style="padding:0.4em;">Digital divide, smart village</td>
+  </tr>
+</tbody>
+</table>
+```
+
+---
+
+# Bagian 4 {.section-title background-color="#4a235a"}
+
+## Menggabungkan Susenas & PODES
+
+---
+
+## Strategi Merging Susenas–PODES
+
+PODES beroperasi di level **desa/kelurahan**, sedangkan Susenas beroperasi di level **rumah tangga dan individu**. Penggabungan dilakukan dengan:
+
+::: {.columns}
+::: {.column width="50%"}
+**Level Kabupaten/Kota**
+
+Agregasi variabel PODES (misal: jumlah desa bencana) ke level kab/kota, lalu merge dengan data Susenas menggunakan kode kab/kota.
+
+```r
+# R
+podes_kab <- podes_desa |>
+  group_by(kode_kab) |>
+  summarise(
+    n_desa_banjir = sum(banjir == 1),
+    pct_desa_puskesmas = mean(ada_puskesmas)
+  )
+
+df_merged <- susenas_rt |>
+  left_join(podes_kab, by = "kode_kab")
+```
+:::
+::: {.column width="50%"}
+**Level Desa (jika tersedia)**
+
+Susenas 2021 ke atas menyertakan kode desa, sehingga merge langsung dimungkinkan.
+
+```r
+# R
+df_merged <- susenas_rt |>
+  left_join(
+    podes_desa,
+    by = c("kode_prov", "kode_kab",
+           "kode_kec", "kode_desa")
+  )
+```
+
+::: {.callout-warning}
+Pastikan **tahun Susenas dan PODES kompatibel** (misal Susenas 2022 + PODES 2021). Gunakan PODES tahun terdekat sebelumnya.
+:::
+:::
+:::
+
+---
+
+## Contoh Penerapan: Kemiskinan Anak + Bencana
+
+```{=html}
+<div style="background:#f8f9fa; border:1px solid #dee2e6; border-radius:8px; padding:1em; font-size:0.88em;">
+<p style="margin:0 0 0.5em 0;"><strong>Pertanyaan Riset:</strong> Apakah paparan bencana alam di tingkat desa meningkatkan kemiskinan multidimensi anak?</p>
+
+<div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:0.8em; margin-top:0.5em;">
+  <div style="background:#eaf2fb; padding:0.7em; border-radius:6px;">
+    <p style="margin:0 0 0.3em 0; font-weight:bold; color:#1a5276;">Data Susenas (2022)</p>
+    <ul style="margin:0; font-size:0.9em; line-height:1.7;">
+      <li>Variabel dependen: kemiskinan anak (7 dimensi MODA)</li>
+      <li>Variabel kontrol RT: pendidikan KK, status kerja, pengeluaran</li>
+      <li>Unit: individu anak 0–17 tahun</li>
+    </ul>
+  </div>
+  <div style="background:#eafaf1; padding:0.7em; border-radius:6px;">
+    <p style="margin:0 0 0.3em 0; font-weight:bold; color:#145a32;">Data PODES (2021)</p>
+    <ul style="margin:0; font-size:0.9em; line-height:1.7;">
+      <li>Proxy bencana: jumlah desa terdampak banjir/longsor per kab/kota</li>
+      <li>Kontrol desa: ada tidaknya puskesmas, sekolah, listrik</li>
+    </ul>
+  </div>
+  <div style="background:#fef9e7; padding:0.7em; border-radius:6px;">
+    <p style="margin:0 0 0.3em 0; font-weight:bold; color:#b7770d;">Metode Analisis</p>
+    <ul style="margin:0; font-size:0.9em; line-height:1.7;">
+      <li>Logit / probit dengan fixed effects kab/kota</li>
+      <li>Cluster SE di level kab/kota</li>
+      <li>Subsampel: perkotaan vs perdesaan</li>
+    </ul>
+  </div>
+</div>
+</div>
+```
+
+> *"...this study utilized data from the 2021 Village Potential Statistics (Podes) to obtain information of natural disasters such as floods, flash floods, landslides, and droughts at the village level."*
+> — Fernandez et al. (2025), *Development Studies Research*
+
+---
+
+# Bagian 5 {.section-title background-color="#6e2f1a"}
+
+## Contoh Paper Scopus yang Menggunakan Susenas & PODES
+
+---
+
+## Paper 1 — Kemiskinan Anak Multidimensi
+
+::: {.callout-note icon=false}
+### 📄 Fernandez et al. (2025)
+**Judul:** *Informality and multidimensional child poverty: evidence from urban and rural Indonesia*  
+**Jurnal:** *Development Studies Research* (Taylor & Francis, **Scopus-indexed**)
+
+**Data:** Susenas 2022 + PODES 2021  
+**Metode:** Binary & multinomial logit regression  
+**Temuan:** Informalitas pekerjaan secara konsisten meningkatkan risiko kemiskinan anak multidimensi, terutama di perdesaan. PODES digunakan sebagai proxy kerentanan bencana alam di level kab/kota.  
+**Variabel kunci Susenas:** 7 indikator MODA (Multiple Overlapping Deprivation Analysis)  
+**Variabel kunci PODES:** Desa terdampak banjir, longsor, kekeringan
+:::
+
+**Relevansi metodologis:** Contoh sempurna *cross-level merging* Susenas + PODES.
+
+---
+
+## Paper 2 — JKN, Disabilitas & Perlindungan Keuangan
+
+::: {.callout-note icon=false}
+### 📄 Zainudin et al. (2025)
+**Judul:** *Health insurance coverage, healthcare use, and financial protection amongst people with disabilities in Indonesia: analysis of the 2021 National Socioeconomic Survey*  
+**Jurnal:** *eClinicalMedicine* / *The Lancet Discovery Science* (**Scopus Q1**)
+
+**Data:** Susenas Maret 2021 (*n* = 1.277.497 individu)  
+**Metode:** Multivariate logistic regression  
+**Temuan:** ~30% penyandang disabilitas tidak memiliki JKN; cakupan lebih rendah pada kelompok termiskin, perdesaan, dan pekerja mandiri.  
+**Variabel kunci:** Washington Group Short Set (WG-SS) dari Blok X Susenas, kepemilikan JKN (Blok XI), out-of-pocket payment, catastrophic health expenditure
+:::
+
+**Relevansi metodologis:** Menunjukkan bagaimana menggunakan variabel disabilitas (Blok X) dan JKN (Blok XI) secara bersamaan.
+
+---
+
+## Paper 3 — Kerentanan Sosial & Bencana
+
+::: {.callout-note icon=false}
+### 📄 Kurniawan et al. (2021)
+**Judul:** *Revisiting social vulnerability analysis in Indonesia data*  
+**Jurnal:** *Data in Brief* (Elsevier, **Scopus-indexed**)
+
+**Data:** Susenas 2017  
+**Metode:** Fuzzy Geographically Weighted Clustering (FGWC)  
+**Temuan:** Menyajikan dataset kerentanan sosial Indonesia berbasis Susenas, mencakup dimensi kemiskinan, kesehatan, pendidikan, dan perumahan di level kabupaten.  
+**Kontribusi:** Membangun indeks komposit kerentanan yang berguna untuk analisis spasial
+:::
+
+**Relevansi metodologis:** Contoh bagaimana Susenas digunakan untuk membangun **composite index** yang dapat digabung dengan data PODES atau data spasial.
+
+---
+
+## Paper 4 — Kemiskinan Multidimensi & Gender
+
+::: {.callout-note icon=false}
+### 📄 Wahyuni & Wongkaren (2022)
+**Judul:** *Gender Determinant on Multidimensional Poverty Index: Evidence from Indonesia*  
+**Jurnal:** *Soseco — Jurnal Ilmu Sosial dan Ilmu Ekonomi* (UGM, **Sinta 2 / Scopus evaluated**)
+
+**Data:** Susenas 2018  
+**Metode:** Logit estimation  
+**Temuan:** Sekitar 10% penduduk termasuk kelompok "rentan miskin"; kemiskinan multidimensi paling dipengaruhi oleh tahun sekolah, kepemilikan JKN, dan aset rumah tangga.  
+**Variabel kunci:** Indeks kemiskinan multidimensi berbasis Alkire-Foster (AF method), variabel gender, pendidikan, akses layanan
+:::
+
+**Relevansi metodologis:** Contoh aplikasi **Alkire-Foster methodology** menggunakan Susenas.
+
+---
+
+## Ringkasan Paper Susenas & PODES di Jurnal Internasional
+
+```{=html}
+<table style="font-size:0.8em; width:100%; border-collapse:collapse;">
+<thead>
+  <tr style="background:#922b21; color:white;">
+    <th style="padding:0.5em;">Topik Riset</th>
+    <th style="padding:0.5em;">Data</th>
+    <th style="padding:0.5em;">Metode Utama</th>
+    <th style="padding:0.5em;">Jurnal</th>
+  </tr>
+</thead>
+<tbody>
+  <tr style="background:#fdedec;">
+    <td style="padding:0.4em;">Kemiskinan anak & informalitas</td>
+    <td style="padding:0.4em;">Susenas 2022 + PODES 2021</td>
+    <td style="padding:0.4em;">Logit regression</td>
+    <td style="padding:0.4em;"><em>Development Studies Research</em></td>
+  </tr>
+  <tr>
+    <td style="padding:0.4em;">JKN & disabilitas</td>
+    <td style="padding:0.4em;">Susenas 2021</td>
+    <td style="padding:0.4em;">Multivariate logit</td>
+    <td style="padding:0.4em;"><em>eClinicalMedicine</em> (Q1)</td>
+  </tr>
+  <tr style="background:#fdedec;">
+    <td style="padding:0.4em;">Kerentanan sosial spasial</td>
+    <td style="padding:0.4em;">Susenas 2017</td>
+    <td style="padding:0.4em;">Fuzzy GWC clustering</td>
+    <td style="padding:0.4em;"><em>Data in Brief</em></td>
+  </tr>
+  <tr>
+    <td style="padding:0.4em;">Kemiskinan multidimensi & gender</td>
+    <td style="padding:0.4em;">Susenas 2018</td>
+    <td style="padding:0.4em;">Logit (Alkire-Foster)</td>
+    <td style="padding:0.4em;"><em>Soseco</em> (UGM)</td>
+  </tr>
+  <tr style="background:#fdedec;">
+    <td style="padding:0.4em;">Smart village & digital divide</td>
+    <td style="padding:0.4em;">PODES 2021</td>
+    <td style="padding:0.4em;">Factor analysis (spatial)</td>
+    <td style="padding:0.4em;"><em>ScienceDirect</em> 2025</td>
+  </tr>
+  <tr>
+    <td style="padding:0.4em;">Cash transfer & inequality</td>
+    <td style="padding:0.4em;">Susenas 2019–2022</td>
+    <td style="padding:0.4em;">PSM (propensity score)</td>
+    <td style="padding:0.4em;"><em>Priviet Social Sciences J.</em></td>
+  </tr>
+</tbody>
+</table>
+```
+
+---
+
+# Bagian 6 {.section-title background-color="#1b2631"}
+
+## Tips untuk Peneliti
+
+---
+
+## Panduan Akses & Penggunaan Data
+
+::: {.columns}
+::: {.column width="50%"}
+**Cara Mendapatkan Data**
+
+1. 🌐 Kunjungi [**microdata.bps.go.id**](https://microdata.bps.go.id)
+2. Daftar akun peneliti (gratis)
+3. Ajukan permohonan data
+4. Tersedia dalam format `.dta` (Stata) dan `.sav` (SPSS)
+5. Microdata biasanya dapat dibaca dengan:
+   - **R**: `haven::read_dta()`
+   - **Python**: `pyreadstat.read_dta()`
+   - **Stata**: `use filename.dta`
+:::
+::: {.column width="50%"}
+**Hal yang Perlu Diperhatikan**
+
+::: {.callout-important}
+**Checklist sebelum analisis:**
+
+- [ ] Gunakan **sampling weight** selalu
+- [ ] Cek **missing values** sistematis
+- [ ] Pahami **unit analisis** (RT vs individu)
+- [ ] Pahami **referensi waktu** tiap pertanyaan (seminggu/sebulan/setahun terakhir)
+- [ ] Verifikasi **label variabel** dari codebook resmi
+- [ ] Perhatikan **perubahan kuesioner** antar tahun
+:::
+:::
+:::
+
+---
+
+## Alur Kerja Riset yang Disarankan
+
+```{=html}
+<div style="display:flex; flex-direction:column; gap:0.4em; font-size:0.88em;">
+  <div style="display:flex; align-items:center; gap:1em;">
+    <div style="background:#1a5276; color:white; border-radius:50%; width:2em; height:2em; display:flex; align-items:center; justify-content:center; font-weight:bold; flex-shrink:0;">1</div>
+    <div style="background:#eaf2fb; padding:0.5em 1em; border-radius:6px; flex:1;"><strong>Rumuskan Pertanyaan Riset</strong> — Pastikan Susenas/PODES memiliki variabel yang relevan</div>
+  </div>
+  <div style="display:flex; align-items:center; gap:1em;">
+    <div style="background:#1e8449; color:white; border-radius:50%; width:2em; height:2em; display:flex; align-items:center; justify-content:center; font-weight:bold; flex-shrink:0;">2</div>
+    <div style="background:#eafaf1; padding:0.5em 1em; border-radius:6px; flex:1;"><strong>Identifikasi Variabel</strong> — Pelajari codebook, tentukan blok mana yang relevan</div>
+  </div>
+  <div style="display:flex; align-items:center; gap:1em;">
+    <div style="background:#7d6608; color:white; border-radius:50%; width:2em; height:2em; display:flex; align-items:center; justify-content:center; font-weight:bold; flex-shrink:0;">3</div>
+    <div style="background:#fef9e7; padding:0.5em 1em; border-radius:6px; flex:1;"><strong>Eksplorasi Data</strong> — Cek distribusi, missing values, outlier (lihat Modul 1)</div>
+  </div>
+  <div style="display:flex; align-items:center; gap:1em;">
+    <div style="background:#6e2f1a; color:white; border-radius:50%; width:2em; height:2em; display:flex; align-items:center; justify-content:center; font-weight:bold; flex-shrink:0;">4</div>
+    <div style="background:#fdedec; padding:0.5em 1em; border-radius:6px; flex:1;"><strong>Merge Dataset</strong> — Gabungkan Susenas + PODES jika diperlukan (pada kode wilayah)</div>
+  </div>
+  <div style="display:flex; align-items:center; gap:1em;">
+    <div style="background:#4a235a; color:white; border-radius:50%; width:2em; height:2em; display:flex; align-items:center; justify-content:center; font-weight:bold; flex-shrink:0;">5</div>
+    <div style="background:#f5eef8; padding:0.5em 1em; border-radius:6px; flex:1;"><strong>Analisis & Interpretasi</strong> — Jalankan model dengan bobot sampel, cluster SE yang tepat</div>
+  </div>
+  <div style="display:flex; align-items:center; gap:1em;">
+    <div style="background:#1b2631; color:white; border-radius:50%; width:2em; height:2em; display:flex; align-items:center; justify-content:center; font-weight:bold; flex-shrink:0;">6</div>
+    <div style="background:#eaecee; padding:0.5em 1em; border-radius:6px; flex:1;"><strong>Publikasi</strong> — Dokumentasikan sumber data, tahun survei, nomor sampel di metodologi</div>
+  </div>
+</div>
+```
+
+---
+
+## Referensi & Sumber Daya
+
+**Data & Dokumentasi:**
+
+- BPS Microdata Portal: [microdata.bps.go.id](https://microdata.bps.go.id)
+- Duke University Libraries PODES Guide: [library.duke.edu/data/sources/podes](https://library.duke.edu/data/sources/podes)
+- Kuesioner resmi VSEN23.K & VSEN23.KP (BPS, 2023)
+- Kuesioner PODES 2021 (BPS, 2021)
+
+**Paper Kunci:**
+
+- Fernandez et al. (2025). *Development Studies Research*, DOI: 10.1080/21665095.2025.2533852
+- Zainudin et al. (2025). *eClinicalMedicine*, PMCID: PMC12274863
+- Kurniawan et al. (2021). *Data in Brief*, DOI: 10.1016/j.dib.2021.107743
+- Wahyuni & Wongkaren (2022). *Soseco*, DOI: 10.17977/um062v5i22022
+
+---
+
+## Ringkasan
+
+::: {.columns}
+::: {.column width="50%"}
+**Susenas:**
+
+✅ Survei rumah tangga tahunan (Maret & September)  
+✅ ~320.000 RT (Maret)  
+✅ Kuesioner Kor (semua RT) + Panel (sub-sampel)  
+✅ Blok kunci: IV (demo), VI (pendidikan), VII (kerja), XI (kesehatan), XXI–XXII (pengeluaran, perumahan)  
+✅ Harus menggunakan **sampling weights**
+:::
+::: {.column width="50%"}
+**PODES:**
+
+✅ Sensus desa 3 tahunan (~83.800 desa)  
+✅ Cakupan lengkap — **bukan sampel**  
+✅ Bab kunci: IV (kependudukan), V (perumahan), VI (bencana), VII (pendidikan, kesehatan), X (TIK)  
+✅ Dapat di-merge ke Susenas melalui **kode wilayah**  
+✅ Ideal sebagai **kontekstual/level-2 variable**
+:::
+:::
+
+::: {.callout-tip}
+Modul selanjutnya: **Modul 2 — Cek Data & Statistik Deskriptif PODES** | **Modul 3 — Regresi Linear & Logit dengan Susenas**
+:::
